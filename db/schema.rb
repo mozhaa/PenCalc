@@ -16,6 +16,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_14_122212) do
     t.integer "role"
     t.string "password_hash"
     t.string "password_salt"
+    t.datetime "registration_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
