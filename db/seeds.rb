@@ -8,29 +8,21 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 
-# User.destroy_all
-# Mod.destroy_all
-# Session.destroy_all
+User.destroy_all
+Mod.destroy_all
+Session.destroy_all
 
-# User.create!(
-#   username: "Anonymous",
-#   role: 0,
-#   password_hash: "123",
-#   password_salt: "123",
-#   registration_date: 1.days.ago
-# )
+User.create!(
+  username: "Anonymous",
+  role: 0
+)
 
-# User.create!(
-#   username: "mozhayka",
-#   role: 2,
-#   password_hash: "123",
-#   password_salt: "123",
-#   registration_date: 1.days.ago
-# )
+User.create!(
+  username: "mozhayka",
+  role: 2
+)
 
-# Mod.create!(
-#   name: "Ajisai SC",
-#   json_path: "",
-#   verified: true,
-#   author_id: 1
-# )
+Mod.create!(
+  name: "Ajisai SC",
+  author_user_id: 1
+)
