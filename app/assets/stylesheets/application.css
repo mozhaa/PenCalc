@@ -13,3 +13,92 @@
  *= require_tree .
  *= require_self
  */
+
+ @font-face {
+  font-family: 'Work Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(worksans.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+body {
+  background-color: var(--c-white);
+}
+
+* {
+  font-family: 'Work Sans';
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+.hover-lighter-1,
+.hover-lighter-2,
+.hover-darker-1,
+.hover-darker-2 {
+  background-color: inherit;
+}
+
+.hover-lighter-1 {
+  &:hover {
+    filter: brightness(105%);
+  }
+
+  &:active {
+    filter: brightness(110%);
+  }
+}
+
+.hover-lighter-2 {
+  &:hover {
+    filter: brightness(110%);
+  }
+
+  &:active {
+    filter: brightness(120%);
+  }
+}
+
+.hover-darker-1 {
+  &:hover {
+    filter: brightness(95%);
+  }
+
+  &:active {
+    filter: brightness(90%);
+  }
+}
+
+.hover-darker-1 {
+  &:hover {
+    filter: brightness(90%);
+  }
+
+  &:active {
+    filter: brightness(80%);
+  }
+}
+
+input[type="text"] {
+  border: 1px solid var(--c-gray);
+  border-radius: 3px;
+
+  background-color: var(--c-white);
+  transition: background-color 1s ease;
+}
+
+input[type="text"].wrong-input {
+  background-color: #fad7d7;
+  transition: background-color 1s ease;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  text-align: center;
+  font-weight: normal;
+  margin: 1em;
+}

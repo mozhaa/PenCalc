@@ -1,0 +1,9 @@
+html {
+  --c-black: #080705;
+  --c-gray: #40434e;
+  --c-dark-red: #702632;
+  --c-red: #912f40;
+  --c-white: #fffffa;
+  --c-dark-white: hsl(60, 12%, 94%);
+  --c-light-gray: hsl(226, 8%, 43%);
+}

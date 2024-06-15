@@ -1,0 +1,11 @@
+<h1>Explore models</h1>
+
+<ul id="feed-container">
+  <% @mods.each do |mod| %>
+  <li class="mod hover-darker-1">
+      <p class="name"><%= mod[:name] %></p>
+      <p class="author"><%= mod[:author] %></p>
+      <p class="date"><%= mod[:created_at] %></p>
+  </li>
+  <% end %>
+</ul>

@@ -8,11 +8,17 @@
     <%= csp_meta_tag %>
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-    <%= stylesheet_link_tag "colors" %>
+    <%= stylesheet_link_tag "navbar", "colors" %>
     <%= javascript_importmap_tags %>
   </head>
 
   <body>
-    <%= yield %>
+    <div class="nav-layout">
+      <%= render 'navbar' %>
+  
+      <div class="page-content">
+        <%= yield %>
+      </div> 
+    </div>
   </body>
 </html>

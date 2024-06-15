@@ -1,0 +1,51 @@
+#feed-container {
+  margin: 2rem auto 0;
+  max-width: 40%;
+  border: 1px solid hsl(60, 9%, 72%);
+  border-radius: 10px;
+  padding: 1rem;
+
+  list-style-type: none;
+
+  & > li+li {
+    margin-top: 1rem;
+  }
+
+  & > .mod {
+    padding: .5rem;
+    border: inherit;
+    border-radius: inherit;
+    background-color: var(--c-white);
+    cursor: pointer;
+
+    position: relative;
+
+    & > .name {
+      margin: .5em .5em 1em 1em;
+      font-size: 1.5em;
+    }
+
+    & > .author {
+      position: absolute;
+      right: 1em;
+      top: .8em;
+      margin: 0;
+
+      font-style: italic;
+
+      &::before {
+        content: "by ";
+      }
+    }
+
+    & > .date {
+      position: absolute;
+      right: 1em;
+      bottom: .8em;
+
+      color: var(--c-light-gray);
+
+      margin: 0;
+    }
+  }
+}

@@ -1,0 +1,36 @@
+.nav-layout {
+  display: grid;
+  grid-template-areas: 
+    "header"
+    "content";
+  grid-template-rows: min-content 1fr;
+
+  & > nav.main-header {
+    grid-area: header;
+  }
+
+  & > .page-content {
+    grid-area: content;
+  }
+}
+
+nav.main-header {
+  grid-area: nav;
+  width: 100%;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+
+  &, & > a {
+    background-color: var(--c-gray);
+  }
+
+  & > a {
+    padding: 1rem 2rem;
+
+    text-decoration: none;
+    color: white;
+    letter-spacing: .05em;
+  }
+}
