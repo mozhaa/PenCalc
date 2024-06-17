@@ -5,6 +5,6 @@ Rails.application.routes.draw do
   get :mods, to: "mods#index"
   resource :mods, only: :new
   resource :sessions, only: [:new, :create, :destroy]
-  resources :users, only: [:new, :create, :show]
-  # get "users/:username", to: "users#show"
+  resources :users, only: [:new, :create]
+  get "/users/:username", to: "users#show", as: :user
 end

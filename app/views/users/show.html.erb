@@ -1,3 +1,7 @@
 <h1>Profile</h1>
-<h2>Username: <%= @current.user.username %></h2>
-<%= button_to "Sign Out", { controller: :sessions, action: :destroy }, method: :delete %>
+<h2>Username: <%= @user.username %></h2>
+<%= 
+  if @current.user && @current.user.id == @user.id then 
+    button_to "Sign Out", { controller: :sessions, action: :destroy }, method: :delete 
+  end 
+%>
