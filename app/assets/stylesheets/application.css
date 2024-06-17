@@ -102,3 +102,36 @@ h4 {
   font-weight: normal;
   margin: 1em;
 }
+
+form {
+  max-width: 15em;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 1.3em;
+
+
+  & > * {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+
+    margin-top: 1em;
+  }
+
+  & > input[type="text"],
+  & > input[type="password"] {
+    width: 100%;
+    padding: .2em;
+    margin-top: .5em;
+  }
+
+  & > label {
+    padding-left: .5em;
+  }
+
+  & > button,
+  & > input[type="submit"] {
+    margin-top: 2em;
+    padding: .5em 2em;
+  }
+}
