@@ -1,4 +1,6 @@
 <nav class="main-header">
-  <a class="hover-darker-1" href="explore.html">Explore</a>
-  <a class="hover-darker-1" href="editor.html">Editor</a>
+  <%= link_to "Explore", { controller: "mods", action: "index"}, class: "hover-darker-1" %>
+  <%= link_to "Editor", { controller: "mods", action: "new"}, class: "hover-darker-1" %>
+  <%= link_to "Sign In", { controller: "sessions", action: "new"}, class: "hover-darker-1" %>
+  <%= link_to "Sign Up", { controller: "users", action: "new"}, class: "hover-darker-1" %>
 </nav>

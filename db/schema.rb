@@ -24,6 +24,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_15_192017) do
     t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["token"], name: "index_sessions_on_token", unique: true
     t.index ["user_id"], name: "index_sessions_on_user_id"
   end
 
@@ -32,6 +33,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_15_192017) do
     t.integer "role", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["username"], name: "index_users_on_username", unique: true
   end
 
   add_foreign_key "mods", "users", column: "author_user_id"
