@@ -1,1 +1,13 @@
+<h2 style="color: red"><%= flash.alert %></h2>
+<h2 style="color: red"><%= flash.notice %></h2>
 <h1>Sign Up</h1>
+
+<%= form_with model: @user, method: :create do |form| %>
+  <%= form.label :username, "Username" %>
+  <%= form.text_field :username %>
+  <%= form.label :password, "Password" %>
+  <%= form.password_field :password %>
+  <%= form.label :password_confirmation, "Password Confirmation" %>
+  <%= form.password_field :password_confirmation %>
+  <%= form.submit "Register", disable_with: 'Registering...' %>
+<% end %>

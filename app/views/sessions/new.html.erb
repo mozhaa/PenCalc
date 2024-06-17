@@ -1,1 +1,11 @@
+<h2 style="color: red"><%= flash.alert %></h2>
+<h2 style="color: red"><%= flash.notice %></h2>
 <h1>Sign In</h1>
+
+<%= form_with url: sessions_path, method: :create do |form| %>
+  <%= form.label :username, "Username" %>
+  <%= form.text_field :username %>
+  <%= form.label :password, "Password" %>
+  <%= form.password_field :password %>
+  <%= form.submit "Log In", disable_with: 'Logging In...' %>
+<% end %>
