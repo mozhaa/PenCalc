@@ -10,9 +10,11 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
-      redirect_to controller: :sessions, action: :new, notice: "User was successfully created!"
+      flash[:notice] = "User was successfully created!"
+      redirect_to controller: :sessions, action: :new
     else
-      redirect_to controller: :users, action: :new, alert: "User with this nickname already exists!"
+      flash[:alert] = "User with this nickname already exists!"
+      redirect_to controller: :users, action: :new
     end
   end
 

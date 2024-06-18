@@ -12,7 +12,8 @@ class SessionsController < ApplicationController
       session[:user_id] = user.id.to_s
       redirect_to "/"
     else
-      redirect_to controller: :sessions, action: :new, alert: "Authentication failed!"
+      flash[:alert] = "Authentication failed!"
+      redirect_to controller: :sessions, action: :new
     end
   end
 
