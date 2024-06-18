@@ -5,6 +5,7 @@ body,
 .editor-layout {
   height: 100%;
   width: 100%;
+  overflow: auto;
 }
 
 .editor-layout {
@@ -14,7 +15,7 @@ body,
     "np cl mn";
 
   grid-template-columns: minmax(20em, 2fr) 8fr minmax(10em, 1fr);
-  grid-template-rows: 5fr 2fr;
+  grid-template-rows: 5fr minmax(min-content, 2fr);
   
   gap: 3px;
 
@@ -22,6 +23,7 @@ body,
 }
 
 .panel {
+  overflow: auto;
   background-color: white;
 }
 

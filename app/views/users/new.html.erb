@@ -2,7 +2,7 @@
 <h2 style="color: red"><%= flash.notice %></h2>
 <h1>Sign Up</h1>
 
-<%= form_with model: @user, method: :create do |form| %>
+<%= form_with model: @user, method: :create, class: "pretty" do |form| %>
   <%= form.label :username, "Username" %>
   <%= form.text_field :username %>
   <%= form.label :password, "Password" %>

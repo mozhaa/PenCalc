@@ -1,6 +1,6 @@
 .panel.canvas {
   position: relative;
-  background-color: bisque;
+  background-color: var(--c-white);
 }
 
 .mod-name-input {
