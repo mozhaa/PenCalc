@@ -1,6 +1,7 @@
 .new-part-form {
   font-size: 1rem;
   padding: 1em;
+  padding-top: .5em;
 
   & > form {
     display: grid;
@@ -23,6 +24,7 @@
 
     & > h3 {
       margin: 0;
+      margin-bottom: .5em;
     }
 
     & input[type="text"].option {
