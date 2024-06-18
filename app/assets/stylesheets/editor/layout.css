@@ -11,11 +11,10 @@ body,
   display: grid;
   grid-template-areas: 
     "pl cv cv"
-    "pl ta ta"
     "np cl mn";
 
-  grid-template-columns: 2fr 8fr 1fr;
-  grid-template-rows: 5fr min-content 2fr;
+  grid-template-columns: minmax(20em, 2fr) 8fr minmax(10em, 1fr);
+  grid-template-rows: 5fr 2fr;
   
   gap: 3px;
 
@@ -36,10 +35,6 @@ body,
 
 .new-part-form {
   grid-area: np;
-}
-
-.mod-name-textarea {
-  grid-area: ta;
 }
 
 .calc-info {

@@ -82,7 +82,7 @@ body {
   }
 }
 
-input[type="text"] {
+form > input[type="text"] {
   border: 1px solid var(--c-gray);
   border-radius: 3px;
 
@@ -90,7 +90,7 @@ input[type="text"] {
   transition: background-color 1s ease;
 }
 
-input[type="text"].wrong-input {
+form > input[type="text"].wrong-input {
   background-color: #fad7d7;
   transition: background-color 1s ease;
 }

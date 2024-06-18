@@ -1,0 +1,18 @@
+.panel.canvas {
+  position: relative;
+  background-color: bisque;
+}
+
+.mod-name-input {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  border: 0;
+  outline: 0;
+  background-color: transparent;
+
+  font-size: 1.8rem;
+  text-align: center;
+  padding-bottom: .2em;
+  padding-top: .2em;
+}
