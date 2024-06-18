@@ -1,25 +1,15 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>PenCalc Tool</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
+<%= content_for :head do %>
+  <%= stylesheet_link_tag "navbar" %>
+<% end %>
 
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-    <%= stylesheet_link_tag "navbar", "colors" %>
-    <%= javascript_include_tag "jquery.layout" %>
-    <%= javascript_importmap_tags %>
-  </head>
+<%= content_for :content do %>
+  <div class="nav-layout">
+    <%= render partial: "navbar" %>
+    
+    <div class="page-content">
+      <%= content_for?(:page_content) ? yield(:page_content) : yield %>
+    </div> 
+  </div>
+<% end %>
 
-  <body>
-    <div class="nav-layout">
-      <%= render 'navbar' %>
-  
-      <div class="page-content">
-        <%= yield %>
-      </div> 
-    </div>
-  </body>
-</html>
+<%= render template: "layouts/application" %>
