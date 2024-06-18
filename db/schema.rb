@@ -13,7 +13,7 @@
 ActiveRecord::Schema[7.1].define(version: 2024_06_15_191414) do
   create_table "mods", force: :cascade do |t|
     t.string "name", null: false
-    t.integer "author_user_id", null: false
+    t.integer "author_user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["author_user_id"], name: "index_mods_on_author_user_id"
@@ -21,8 +21,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_15_191414) do
 
   create_table "users", force: :cascade do |t|
     t.string "username", null: false
-    t.string "password_digest", null: false
-    t.integer "role", null: false
+    t.string "password_digest"
+    t.integer "role"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["username"], name: "index_users_on_username", unique: true
