@@ -16,7 +16,6 @@ body,
 
   grid-template-columns: minmax(20em, 2fr) 8fr minmax(10em, 1fr);
   grid-template-rows: 5fr minmax(min-content, 2fr);
-  
   gap: 3px;
 
   background-color: var(--c-black);
