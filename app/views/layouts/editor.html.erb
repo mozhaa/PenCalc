@@ -1,12 +1,4 @@
 <%= content_for :head do %>
-  <%= javascript_include_tag "jquery.layout" %>
-  <%= stylesheet_link_tag "layout-default" %>
-  <!-- start jquery.layout -->
-  <script>
-    $(document).ready(function(){
-      $('#editor-container').layout();
-    });
-  </script>
 <% end %>
 
 <%= render template: "layouts/with_navbar" %>
