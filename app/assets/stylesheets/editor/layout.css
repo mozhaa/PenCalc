@@ -1,0 +1,51 @@
+html,
+body,
+.nav-layout,
+.page-content,
+.editor-layout {
+  height: 100%;
+  width: 100%;
+}
+
+.editor-layout {
+  display: grid;
+  grid-template-areas: 
+    "pl cv cv"
+    "pl ta ta"
+    "np cl mn";
+
+  grid-template-columns: 2fr 8fr 1fr;
+  grid-template-rows: 5fr min-content 2fr;
+  
+  gap: 3px;
+
+  background-color: var(--c-black);
+}
+
+.panel {
+  background-color: white;
+}
+
+.parts-list {
+  grid-area: pl;
+}
+
+.canvas {
+  grid-area: cv;
+}
+
+.new-part-form {
+  grid-area: np;
+}
+
+.mod-name-textarea {
+  grid-area: ta;
+}
+
+.calc-info {
+  grid-area: cl;
+}
+
+.menu {
+  grid-area: mn;
+}
