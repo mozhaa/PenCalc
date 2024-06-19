@@ -1,4 +1,4 @@
-$(function() {
+$(document).on("turbo:load", function() {
     let index = 0
     $(".show-measure-units").replaceWith(function() {
         index++
