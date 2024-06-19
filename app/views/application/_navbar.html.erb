@@ -1,5 +1,5 @@
 <nav class="main-header">
-  <%= link_to "Explore", { controller: "mods", action: "index"}, class: "hover-darker-1" %>
+  <%= link_to "Explore", { controller: "mods", action: "show"}, class: "hover-darker-1" %>
   <%= link_to "Editor", { controller: "mods", action: "new"}, class: "hover-darker-1" %>
   <% unless @current.user %>
     <%= link_to "Sign In", { controller: "sessions", action: "new"}, class: "hover-darker-1" %>
