@@ -3,7 +3,6 @@ $(document).on("turbo:load", function() {
     $(".show-measure-units").replaceWith(function() {
         index++
         var new_input = $(this).clone().attr("data-pre-id", index).wrap("<div></div>").parent().html()
-        console.log(new_input)
         return `
 <div style="position: relative">
     ${new_input}
