@@ -13,6 +13,7 @@
 ActiveRecord::Schema[7.1].define(version: 2024_06_15_191414) do
   create_table "mods", force: :cascade do |t|
     t.string "name", null: false
+    t.text "structure", null: false
     t.integer "author_user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
