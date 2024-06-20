@@ -26,22 +26,22 @@ body,
   background-color: white;
 }
 
-.parts-list {
+.parts-list-panel {
   grid-area: pl;
 }
 
-.canvas {
+.canvas-panel {
   grid-area: cv;
 }
 
-.part-creator {
+.part-creator-panel {
   grid-area: np;
 }
 
-.calc-info {
+.calc-info-panel {
   grid-area: cl;
 }
 
-.menu {
+.menu-panel {
   grid-area: mn;
 }

@@ -1,4 +1,4 @@
-.panel.canvas {
+.panel.canvas-panel {
   position: relative;
   background-color: var(--c-white);
 }
