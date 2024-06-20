@@ -1,7 +1,4 @@
-// current, selected
-
-$(function() {
-
+$(document).on("turbo:load", function() {
     $(".selectable-list").on("click", function(event) {
         let part = $(event.target).closest("li")
         if (!event.ctrlKey)
