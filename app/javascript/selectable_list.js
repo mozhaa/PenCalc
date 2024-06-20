@@ -1,32 +1,39 @@
 // current, selected
 
 $(function() {
+
     $(".selectable-list").on("click", function(event) {
         let part = $(event.target).closest("li")
         if (!event.ctrlKey)
             $(this).children("li").removeClass("sl-selected")
         if (event.shiftKey) {
-            part.addClass("sl-temporary")
-            activate = false
-            $(this).children("li").each((_, elem) => {
-                if ($(elem).hasClass("sl-temporary") || $(elem).hasClass("sl-current")) {
-                    if ($(elem).hasClass("sl-temporary") && $(elem).hasClass("sl-current")) {
-                        $(elem).addClass("sl-selected")
-                    } else {
-                        activate = !activate
-                        if (!activate)
+            if ($(this).children("li.sl-current").length == 0) {
+                $(this).children("li").removeClass("sl-current")
+                part.addClass("sl-current sl-selected")
+            } else {
+                part.addClass("sl-temporary")
+                activate = false
+                $(this).children("li").each((_, elem) => {
+                    if ($(elem).hasClass("sl-temporary") || $(elem).hasClass("sl-current")) {
+                        if ($(elem).hasClass("sl-temporary") && $(elem).hasClass("sl-current")) {
                             $(elem).addClass("sl-selected")
+                        } else {
+                            activate = !activate
+                            if (!activate)
+                                $(elem).addClass("sl-selected")
+                        }
                     }
-                }
-                if (activate)
-                    $(elem).addClass("sl-selected")
-            })
-            part.removeClass("sl-temporary")
+                    if (activate)
+                        $(elem).addClass("sl-selected")
+                })
+                part.removeClass("sl-temporary")
+            }
         } else {
-            $(this).children("li").removeClass("sl-current")
             part.toggleClass("sl-selected")
         }   
-        if (!(event.shiftKey && !event.ctrlKey))
+        if (!(event.shiftKey && !event.ctrlKey)) {
+            $(this).children("li").removeClass("sl-current")
             part.addClass("sl-current")
+        }
     })
 })
