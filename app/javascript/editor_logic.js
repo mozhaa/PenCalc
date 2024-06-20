@@ -85,5 +85,40 @@ $(document).on("turbo:load", function() {
         "pos": "0",
         "color": "#00ff00"
     }))
+    window.structure.add_part(new Part({
+        "name": "A",
+        "mass": "10",
+        "len": "20",
+        "pos": "0",
+        "color": "#00ff00"
+    }))
+    window.structure.add_part(new Part({
+        "name": "A",
+        "mass": "10",
+        "len": "20",
+        "pos": "0",
+        "color": "#00ff00"
+    }))
+    window.structure.add_part(new Part({
+        "name": "A",
+        "mass": "10",
+        "len": "20",
+        "pos": "0",
+        "color": "#00ff00"
+    }))
+    window.structure.add_part(new Part({
+        "name": "A",
+        "mass": "10",
+        "len": "20",
+        "pos": "0",
+        "color": "#00ff00"
+    }))
+    window.structure.add_part(new Part({
+        "name": "A",
+        "mass": "10",
+        "len": "20",
+        "pos": "0",
+        "color": "#00ff00"
+    }))
 
 })
