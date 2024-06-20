@@ -21,3 +21,8 @@
   margin: auto 0;
   border-radius: 50%;
 }
+
+.part.sl-selected {
+  background-color: var(--c-light-gray);
+  color: var(--c-white);
+}
