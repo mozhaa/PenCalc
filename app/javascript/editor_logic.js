@@ -5,6 +5,25 @@ class Part {
         this.len = parseFloat(info["len"])
         this.pos = parseFloat(info["pos"])
         this.color = info["color"]
+
+        if (isNaN(this.mass))
+            throw new Error("Mass should be a floating-point number (for example 4.3)")
+        if (this.mass <= 0)
+            throw new Error("Mass should be positive")
+        if (isNaN(this.len))
+            throw new Error("Length should be a floating-point number (for example 5.15)")
+        if (this.len <= 0)
+            throw new Error("Length should be positive")        
+    }
+
+    html() {
+        return `
+<li class="part hover-darker-1">
+    <span class="color-tag" style="background-color: ${this.color}"></span>
+    <span class="name-tag">${this.name}</span>
+    <span class="mass-tag">${this.mass} g</span>
+    <span class="len-tag">${this.len} cm</span>
+</li>`
     }
 }
 
@@ -15,14 +34,29 @@ class Structure {
 
     add_part(form) {
         let info = { "pos": "0" }
-        form.serializeArray().forEach((prop) => {info[prop["name"]] = prop["value"]})
-        this.parts.push(new Part(info))
+        form.serializeArray().forEach((prop) => {
+            info[prop["name"]] = prop["value"]
+        })
+        let part = new Part(info)
+        this.parts.push(part)
+        this.show($(".parts-list"))
+    }
+
+    show(list) {
+        list.html("")
+        this.parts.forEach((part) => {
+            list.append(part.html())
+        })
     }
 }
 
 function formSubmit(form) {
-    window.structure.add_part(form)
-    form.find(":input.option[type=text]").val("").trigger("input")
+    try {
+        window.structure.add_part(form)
+        form.find(":input.option[type=text]").val("").trigger("input")
+    } catch (e) {
+        alert(e.message)
+    }
 }
 
 $(document).on("turbo:load", function() {

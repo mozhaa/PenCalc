@@ -35,12 +35,12 @@ body {
   margin: 0;
 }
 
-.hover-lighter-1,
+/* .hover-lighter-1,
 .hover-lighter-2,
 .hover-darker-1,
 .hover-darker-2 {
   background-color: inherit;
-}
+} */
 
 .hover-lighter-1 {
   &:hover {
