@@ -70,6 +70,23 @@ $(document).on("turbo:load", function() {
     window.structure = new Structure($("#data-element").data("structure"))
     $(".part-form").attr("onsubmit", "formSubmit($(this))")
 
+    var canvas = this.__canvas = new fabric.Canvas('editor-canvas')
+    $(window).resize(function() {
+        var canvas_panel = $("#editor-canvas").closest(".canvas-panel")
+        canvas.setDimensions({width: canvas_panel.width(), height: canvas_panel.height()})
+    })
+    $(window).trigger("resize")
+    var rect = new fabric.Rect({
+        width: 100,
+        height: 100,
+        top: 100,
+        left: 100,
+        fill: 'rgba(255,0,0,0.5)'
+      });
+    
+    canvas.add(rect);
+    
+
     // debug
     window.structure.add_part(new Part({
         "name": "1",
