@@ -71,20 +71,38 @@ $(document).on("turbo:load", function() {
     $(".part-form").attr("onsubmit", "formSubmit($(this))")
 
     var canvas = this.__canvas = new fabric.Canvas('editor-canvas')
+
+    // set correct width/height for canvas (change on window resize)
     $(window).resize(function() {
         var canvas_panel = $("#editor-canvas").closest(".canvas-panel")
         canvas.setDimensions({width: canvas_panel.width(), height: canvas_panel.height()})
     })
     $(window).trigger("resize")
+
     var rect = new fabric.Rect({
         width: 100,
         height: 100,
         top: 100,
         left: 100,
-        fill: 'rgba(255,0,0,0.5)'
-      });
+        fill: '#ff0000'
+    });
+    rect.lockMovementY = true
+    rect.lockScalingY = true
+    rect.lockScalingX = true
+    rect.setControlsVisibility({
+        mt: false,
+        mb: false,
+        ml: false,
+        mr: false,
+        bl: false,
+        br: false,
+        tl: false,
+        tr: false,
+        mtr: false
+    });
     
     canvas.add(rect);
+    canvas.renderAll()
     
 
     // debug
