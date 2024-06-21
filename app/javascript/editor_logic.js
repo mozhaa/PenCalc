@@ -96,7 +96,6 @@ class CanvasHandler {
         this.canvas.on("selection:updated", (obj) => { this.selectionSetLocks(obj) });
         this.canvas.on("selection:created", (obj) => { this.selectionSetLocks(obj) });
             
-
         this.rectangles = {}
         
         this.canvas.renderAll()
@@ -134,7 +133,12 @@ class CanvasHandler {
         stats["height"] = part.mass / part.width * CanvasHandler.yScale
         stats["top"] = dims["height"] / 2 - stats["height"] / 2
         stats["left"] = dims["width"] / 2 + part.pos
-        stats["fill"] = part.color
+        let fill = new Color(part.color)
+        fill.alpha *= 0.5
+        stats["fill"] = fill.toString({ format: "hex" })
+        fill.lch.l *= 0.8
+        stats["stroke"] = fill.toString({ format: "hex" })
+        stats["strokeWidth"] = 2
         return stats
     }
 
