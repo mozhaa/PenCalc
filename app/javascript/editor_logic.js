@@ -1,21 +1,26 @@
+function ArgumentException(msg) {
+    this.message = msg
+    this.name = "ArgumentException"
+}
+
 class Part {
     static id_counter = 0
     constructor(info) {
         this.id = Part.id_counter++
         this.name = info["name"]
         this.mass = parseFloat(info["mass"])
-        this.len = parseFloat(info["len"])
+        this.width = parseFloat(info["width"])
         this.pos = parseFloat(info["pos"])
         this.color = info["color"]
 
         if (isNaN(this.mass))
-            throw new Error("Mass should be a floating-point number (for example 4.3)")
+            throw new ArgumentException("Mass should be a floating-point number (for example 4.3)")
         if (this.mass <= 0)
-            throw new Error("Mass should be positive")
-        if (isNaN(this.len))
-            throw new Error("Length should be a floating-point number (for example 5.15)")
-        if (this.len <= 0)
-            throw new Error("Length should be positive")        
+            throw new ArgumentException("Mass should be positive")
+        if (isNaN(this.width))
+            throw new ArgumentException("Length should be a floating-point number (for example 5.15)")
+        if (this.width <= 0)
+            throw new ArgumentException("Length should be positive")        
     }
 
     html() {
@@ -24,7 +29,7 @@ class Part {
     <span class="color-tag" style="background-color: ${this.color}"></span>
     <span class="name-tag">${this.name}</span>
     <span class="mass-tag">${this.mass} g</span>
-    <span class="len-tag">${this.len} cm</span>
+    <span class="width-tag">${this.width} cm</span>
 </li>`
     }
 }
@@ -34,18 +39,24 @@ class Structure {
         this.parts = s.map((elem) => new Part(elem))
     }
 
-    add_part(part) {
+    setCanvasHandler(canvas_handler) {
+        this.canvas_handler = canvas_handler
+    }
+
+    addPart(part) {
         this.parts.push(part)
+        this.canvas_handler.addPart(part)
         this.show($(".parts-list"))
     }
 
-    add_part_by_form(form) {
+    addPartByForm(form) {
         let info = { "pos": "0" }
         form.serializeArray().forEach((prop) => {
             info[prop["name"]] = prop["value"]
         })
         let part = new Part(info)
-        this.add_part(part)
+        this.addPart(part)
+        return part
     }
 
     show(list) {
@@ -58,102 +69,126 @@ class Structure {
 
 function formSubmit(form) {
     try {
-        window.structure.add_part_by_form(form)
+        let part = window.structure.addPartByForm(form)
+        window.canvas_handler.addPart(part)
         form.find(":input.option[type=text]").val("").trigger("input")
     } catch (e) {
-        alert(e.message)
+        if (e instanceof ArgumentException)
+            alert(e.message)
+        else
+            console.log(e.message)
+    }
+}
+
+class CanvasHandler {
+    static xScale = 50
+    static yScale = 20
+
+    constructor(canvas_id) {
+        this.canvas_id = canvas_id
+        this.canvas = new fabric.Canvas(canvas_id)
+
+        // set correct width/height for canvas (change on window resize)
+        $(window).resize(() => { this.updateDimensions() })
+        $(window).trigger("resize")
+
+        this.rectangles = {}
+        
+        this.canvas.renderAll()
+    }
+
+    setStructure(structure) {
+        this.structure = structure
+    }
+
+    calculatePartStats(part) {
+        let dims = this.getDimensions()
+        let stats = {}
+        stats["width"] = part.width * CanvasHandler.xScale
+        stats["height"] = part.mass / part.width * CanvasHandler.yScale
+        stats["top"] = dims["height"] / 2 - stats["height"] / 2
+        stats["left"] = dims["width"] / 2 + part.pos
+        stats["fill"] = part.color
+        return stats
+    }
+
+    getDimensions() {
+        let canvas_panel = $(`#${this.canvas_id}`).closest(".canvas-panel")
+        return { "width": canvas_panel.width(), "height": canvas_panel.height() }
+    }
+
+    updateDimensions() {
+        let dims = this.getDimensions()
+        this.canvas.setDimensions(dims)
+        // TODO: move all objects in the center
+    }
+
+    addPart(part) {
+        let rect = new fabric.Rect(this.calculatePartStats(part));
+        rect.lockMovementY = true
+        rect.lockScalingY = true
+        rect.lockScalingX = true
+        rect.setControlsVisibility({
+            mt: false,
+            mb: false,
+            ml: false,
+            mr: false,
+            bl: false,
+            br: false,
+            tl: false,
+            tr: false,
+            mtr: false
+        });
+        this.rectangles[part.id] = rect
+        this.canvas.add(rect)
     }
 }
 
 $(document).on("turbo:load", function() {
     if (!(window.controller === "mods" && window.action === "new")) return
+
     window.structure = new Structure($("#data-element").data("structure"))
+    window.canvas_handler = new CanvasHandler("editor-canvas")
+
+    window.structure.setCanvasHandler(window.canvas_handler)
+    window.canvas_handler.setStructure(window.structure)
+    
     $(".part-form").attr("onsubmit", "formSubmit($(this))")
-
-    var canvas = this.__canvas = new fabric.Canvas('editor-canvas')
-
-    // set correct width/height for canvas (change on window resize)
-    $(window).resize(function() {
-        var canvas_panel = $("#editor-canvas").closest(".canvas-panel")
-        canvas.setDimensions({width: canvas_panel.width(), height: canvas_panel.height()})
-    })
-    $(window).trigger("resize")
-
-    var rect = new fabric.Rect({
-        width: 100,
-        height: 100,
-        top: 100,
-        left: 100,
-        fill: '#ff0000'
-    });
-    rect.lockMovementY = true
-    rect.lockScalingY = true
-    rect.lockScalingX = true
-    rect.setControlsVisibility({
-        mt: false,
-        mb: false,
-        ml: false,
-        mr: false,
-        bl: false,
-        br: false,
-        tl: false,
-        tr: false,
-        mtr: false
-    });
     
-    canvas.add(rect);
-    canvas.renderAll()
-    
-
     // debug
-    window.structure.add_part(new Part({
-        "name": "1",
-        "mass": "2",
-        "len": "3",
-        "pos": "0",
+    window.structure.addPart(new Part({
+        "name": "A",
+        "mass": "5",
+        "width": "10",
+        "pos": "-5",
         "color": "#ff0000"
     }))
-    window.structure.add_part(new Part({
-        "name": "A",
-        "mass": "10",
-        "len": "20",
+    window.structure.addPart(new Part({
+        "name": "B",
+        "mass": "2",
+        "width": "1",
         "pos": "0",
         "color": "#00ff00"
     }))
-    window.structure.add_part(new Part({
-        "name": "A",
-        "mass": "10",
-        "len": "20",
-        "pos": "0",
-        "color": "#00ff00"
+    window.structure.addPart(new Part({
+        "name": "C",
+        "mass": "2",
+        "width": "1",
+        "pos": "6",
+        "color": "#0000ff"
     }))
-    window.structure.add_part(new Part({
-        "name": "A",
-        "mass": "10",
-        "len": "20",
-        "pos": "0",
-        "color": "#00ff00"
+    window.structure.addPart(new Part({
+        "name": "D",
+        "mass": "4.3",
+        "width": "5.15",
+        "pos": "-7",
+        "color": "#ffff00"
     }))
-    window.structure.add_part(new Part({
-        "name": "A",
-        "mass": "10",
-        "len": "20",
-        "pos": "0",
-        "color": "#00ff00"
+    window.structure.addPart(new Part({
+        "name": "E",
+        "mass": "1",
+        "width": "3",
+        "pos": "3",
+        "color": "#00ffff"
     }))
-    window.structure.add_part(new Part({
-        "name": "A",
-        "mass": "10",
-        "len": "20",
-        "pos": "0",
-        "color": "#00ff00"
-    }))
-    window.structure.add_part(new Part({
-        "name": "A",
-        "mass": "10",
-        "len": "20",
-        "pos": "0",
-        "color": "#00ff00"
-    }))
-
 })
