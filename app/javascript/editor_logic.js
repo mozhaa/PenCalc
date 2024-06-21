@@ -82,7 +82,7 @@ function formSubmit(form) {
 
 class CanvasHandler {
     static xScale = 50
-    static yScale = 20
+    static yScale = 50
 
     constructor(canvas_id) {
         this.canvas_id = canvas_id
@@ -92,9 +92,35 @@ class CanvasHandler {
         $(window).resize(() => { this.updateDimensions() })
         $(window).trigger("resize")
 
+        // set locks for whole selection, only X movement allowed
+        this.canvas.on("selection:updated", (obj) => { this.selectionSetLocks(obj) });
+        this.canvas.on("selection:created", (obj) => { this.selectionSetLocks(obj) });
+            
+
         this.rectangles = {}
         
         this.canvas.renderAll()
+    }
+
+    selectionSetLocks(obj) {
+        if (!obj.selected[0].group) return
+        obj.selected[0].group.lockMovementY = true
+        obj.selected[0].group.lockSkewingX = true
+        obj.selected[0].group.lockSkewingY = true
+        obj.selected[0].group.lockRotation = true
+        obj.selected[0].group.lockScalingX = true
+        obj.selected[0].group.lockScalingY = true
+        obj.selected[0].group.setControlsVisibility({
+            mt: false,
+            mb: false,
+            ml: false,
+            mr: false,
+            bl: false,
+            br: false,
+            tl: false,
+            tr: false,
+            mtr: false
+        })
     }
 
     setStructure(structure) {
@@ -125,9 +151,13 @@ class CanvasHandler {
 
     addPart(part) {
         let rect = new fabric.Rect(this.calculatePartStats(part));
-        rect.lockMovementY = true
-        rect.lockScalingY = true
-        rect.lockScalingX = true
+        rect.lockMovementY = true;
+        rect.lockSkewingX  = true;
+        rect.lockSkewingY  = true;
+        rect.lockRotation  = true;
+        rect.lockScalingX  = true;
+        rect.lockScalingY  = true;
+        
         rect.setControlsVisibility({
             mt: false,
             mb: false,
