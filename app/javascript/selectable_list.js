@@ -34,3 +34,11 @@ $(document).on("turbo:load", function() {
         }
     })
 })
+
+function removeSelection() {
+    $(".selectable-list > li").removeClass("sl-selected")
+}
+
+function select(id) {
+    $(`.selectable-list > li[data-id=${id}]`).addClass("sl-selected")
+}

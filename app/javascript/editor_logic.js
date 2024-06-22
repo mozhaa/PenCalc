@@ -100,8 +100,9 @@ class CanvasHandler {
         ))
 
         // set locks for whole selection, only X movement allowed
-        this.canvas.on("selection:updated", (obj) => { this.selectionSetLocks(obj) });
-        this.canvas.on("selection:created", (obj) => { this.selectionSetLocks(obj) });
+        this.canvas.on("selection:updated", (obj) => { this.selectionSetLocks(obj); this.setSelected(obj) });
+        this.canvas.on("selection:created", (obj) => { this.selectionSetLocks(obj); this.setSelected(obj) });
+        this.canvas.on("selection:cleared", (obj) => { this.setSelected(obj) });
 
         // zoom
         this.canvas.on("mouse:wheel", (opt) => {
@@ -167,6 +168,14 @@ class CanvasHandler {
         })
     }
 
+    setSelected(obj) {
+        removeSelection()   
+        if (obj.selected)
+            obj.selected.forEach((rect) => {
+                select(rect.part_id)
+            })
+    }
+
     setStructure(structure) {
         this.structure = structure
     }
@@ -219,6 +228,7 @@ class CanvasHandler {
             mtr: false
         });
         this.rectangles[part.id] = rect
+        rect.part_id = part.id
         this.canvas.add(rect)
     }
 
