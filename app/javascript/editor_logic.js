@@ -69,8 +69,7 @@ class Structure {
 
 function formSubmit(form) {
     try {
-        let part = window.structure.addPartByForm(form)
-        window.canvas_handler.addPart(part)
+        window.structure.addPartByForm(form)
         form.find(":input.option[type=text]").val("").trigger("input")
     } catch (e) {
         if (e instanceof ArgumentException)
