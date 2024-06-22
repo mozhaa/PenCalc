@@ -307,38 +307,38 @@ $(document).on("turbo:load", function() {
     
     // debug
     window.structure.addPart(new Part({
-        "name": "A",
-        "mass": "5",
-        "width": "10",
-        "pos": "-5",
+        "name": "barrel",
+        "mass": "4",
+        "width": "12",
+        "pos": "0",
         "color": "#ff0000"
     }))
     window.structure.addPart(new Part({
-        "name": "B",
+        "name": "cap1",
         "mass": "2",
-        "width": "1",
+        "width": "4",
         "pos": "0",
         "color": "#00ff00"
     }))
     window.structure.addPart(new Part({
-        "name": "C",
+        "name": "cap2",
         "mass": "2",
-        "width": "1",
-        "pos": "6",
+        "width": "4",
+        "pos": "0",
         "color": "#0000ff"
     }))
     window.structure.addPart(new Part({
-        "name": "D",
-        "mass": "4.3",
-        "width": "5.15",
-        "pos": "-7",
+        "name": "tip1",
+        "mass": "3",
+        "width": "1",
+        "pos": "0",
         "color": "#ffff00"
     }))
     window.structure.addPart(new Part({
-        "name": "E",
-        "mass": "1",
-        "width": "3",
-        "pos": "3",
+        "name": "tip2",
+        "mass": "3",
+        "width": "1",
+        "pos": "0",
         "color": "#00ffff"
     }))
 })
