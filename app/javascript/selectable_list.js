@@ -32,6 +32,12 @@ $(document).on("turbo:load", function() {
             $(this).children("li").removeClass("sl-current")
             part.addClass("sl-current")
         }
+
+        var selected_ids = []
+        $(".selectable-list > li.sl-selected").each((i, elem) => {
+            selected_ids.push($(elem).data("id"))
+        })
+        window.canvas_handler.bindSelectionFromList(selected_ids)
     })
 })
 
@@ -39,6 +45,8 @@ function removeSelection() {
     $(".selectable-list > li").removeClass("sl-selected")
 }
 
-function select(id) {
-    $(`.selectable-list > li[data-id=${id}]`).addClass("sl-selected")
+function select(selected_ids) {
+    selected_ids.forEach((id) => {
+        $(`.selectable-list > li[data-id=${id}]`).addClass("sl-selected")
+    })
 }

@@ -100,9 +100,8 @@ class CanvasHandler {
         ))
 
         // set locks for whole selection, only X movement allowed
-        this.canvas.on("selection:updated", (obj) => { this.selectionSetLocks(obj); this.setSelected(obj) });
-        this.canvas.on("selection:created", (obj) => { this.selectionSetLocks(obj); this.setSelected(obj) });
-        this.canvas.on("selection:cleared", (obj) => { this.setSelected(obj) });
+        this.bindSelections()
+        this.listenSelections = true
 
         // zoom
         this.canvas.on("mouse:wheel", (opt) => {
@@ -147,15 +146,20 @@ class CanvasHandler {
         this.canvas.renderAll()
     }
 
-    selectionSetLocks(obj) {
-        if (!obj.selected[0].group) return
-        obj.selected[0].group.lockMovementY = true
-        obj.selected[0].group.lockSkewingX = true
-        obj.selected[0].group.lockSkewingY = true
-        obj.selected[0].group.lockRotation = true
-        obj.selected[0].group.lockScalingX = true
-        obj.selected[0].group.lockScalingY = true
-        obj.selected[0].group.setControlsVisibility({
+    bindSelections() {
+        this.canvas.on("selection:updated", (obj) => { this.selectionSetLocks(obj); this.bindSelectionToList(obj) });
+        this.canvas.on("selection:created", (obj) => { this.selectionSetLocks(obj); this.bindSelectionToList(obj) });
+        this.canvas.on("selection:cleared", (obj) => { this.bindSelectionToList(obj) });
+    }
+
+    activeSelectionSetLocks(sel) {
+        sel.lockMovementY = true
+        sel.lockSkewingX = true
+        sel.lockSkewingY = true
+        sel.lockRotation = true
+        sel.lockScalingX = true
+        sel.lockScalingY = true
+        sel.setControlsVisibility({
             mt: false,
             mb: false,
             ml: false,
@@ -168,12 +172,34 @@ class CanvasHandler {
         })
     }
 
-    setSelected(obj) {
-        removeSelection()   
-        if (obj.selected)
-            obj.selected.forEach((rect) => {
-                select(rect.part_id)
-            })
+    selectionSetLocks(obj) {
+        if (!this.listenSelections) return
+        if (!obj.selected[0].group) return
+        this.activeSelectionSetLocks(obj.selected[0].group)
+    }
+
+    bindSelectionToList(obj) {
+        if (!this.listenSelections) return
+        removeSelection()  
+        var selected_ids = [] 
+        if (obj.selected) {
+            obj.selected.forEach((rect) => { selected_ids.push(rect.part_id) })
+        }
+        select(selected_ids)
+    }
+
+    bindSelectionFromList(selected_ids) {
+        this.listenSelections = false
+        this.canvas.discardActiveObject() 
+        var rectangles = []
+        selected_ids.forEach((id) => {
+            rectangles.push(this.rectangles[id])
+        })
+        var sel = new fabric.ActiveSelection(rectangles, {canvas: this.canvas})
+        this.activeSelectionSetLocks(sel)
+        this.canvas.setActiveObject(sel)
+        this.canvas.requestRenderAll()
+        this.listenSelections = true
     }
 
     setStructure(structure) {
