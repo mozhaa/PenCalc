@@ -234,7 +234,7 @@ class CanvasHandler {
 
     panLeft(delta) {
         var vpt = this.canvas.viewportTransform
-        vpt[4] -= delta
+        vpt[4] += delta
         this.canvas.setViewportTransform(vpt)
     }
 
@@ -244,7 +244,7 @@ class CanvasHandler {
 }
 
 $(document).on("turbo:load", function() {
-    if (!(window.controller === "mods" && window.action === "new")) return
+    if (!(window.controller == "mods" && window.action === "new")) return
 
     window.structure = new Structure($("#data-element").data("structure"))
     window.canvas_handler = new CanvasHandler("editor-canvas")
