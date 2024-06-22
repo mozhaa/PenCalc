@@ -92,6 +92,10 @@ class CanvasHandler {
         $(window).resize(() => { this.updateDimensions() })
         $(window).trigger("resize")
 
+        // draw axises
+        var dims = this.getDimensions()
+        this.canvas.add(new fabric.Line([-10000, dims["height"] / 2, 10000, dims["height"] / 2], { "stroke": "#111", "strokeWidth": 2}))
+
         // set locks for whole selection, only X movement allowed
         this.canvas.on("selection:updated", (obj) => { this.selectionSetLocks(obj) });
         this.canvas.on("selection:created", (obj) => { this.selectionSetLocks(obj) });
