@@ -94,7 +94,10 @@ class CanvasHandler {
 
         // draw axises
         var dims = this.getDimensions()
-        this.canvas.add(new fabric.Line([-10000, dims["height"] / 2, 10000, dims["height"] / 2], { "stroke": "#111", "strokeWidth": 2}))
+        this.canvas.add(new fabric.Line(
+            [-10000, dims["height"] / 2, 10000, dims["height"] / 2], 
+            { "stroke": "#111", "strokeWidth": 2, "selectable": false}
+        ))
 
         // set locks for whole selection, only X movement allowed
         this.canvas.on("selection:updated", (obj) => { this.selectionSetLocks(obj) });
