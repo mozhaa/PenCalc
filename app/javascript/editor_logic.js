@@ -181,12 +181,11 @@ class CanvasHandler {
 
     bindSelectionToList(obj) {
         if (!this.listenSelections) return
-        removeSelection()  
         var selected_ids = [] 
         if (obj.selected) {
             obj.selected.forEach((rect) => { selected_ids.push(rect.part_id) })
         }
-        select(selected_ids)
+        window.sl.setSelection(selected_ids)
     }
 
     bindSelectionFromList(selected_ids) {
@@ -294,9 +293,13 @@ $(document).on("turbo:load", function() {
 
     window.structure = new Structure($("#data-element").data("structure"))
     window.canvas_handler = new CanvasHandler("editor-canvas")
-
+    
     window.structure.setCanvasHandler(window.canvas_handler)
     window.canvas_handler.setStructure(window.structure)
+
+    let selectableList = new SelectableList("parts-list")
+    selectableList.addEventListener("selection:change", (ids) => { window.canvas_handler.bindSelectionFromList(ids) })
+    window.sl = selectableList
 
     $(".controls-zoom-in").on("click", () => { window.canvas_handler.zoomIn(100) })
     $(".controls-zoom-out").on("click", () => { window.canvas_handler.zoomOut(100) })
