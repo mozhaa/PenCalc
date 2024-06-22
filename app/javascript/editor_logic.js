@@ -96,11 +96,42 @@ class CanvasHandler {
         this.canvas.on("selection:updated", (obj) => { this.selectionSetLocks(obj) });
         this.canvas.on("selection:created", (obj) => { this.selectionSetLocks(obj) });
 
+        // zoom
         this.canvas.on("mouse:wheel", (opt) => {
             var delta = opt.e.deltaY
-            this.zoomIn(delta)
+            this.zoomOut(delta)
             opt.e.preventDefault()
             opt.e.stopPropagation()
+        })
+
+        this.canvas.on("mouse:down", function(opt) {
+            var evt = opt.e
+            if (evt.altKey === true) {
+                this.isDragging = true
+                this.selection = false
+                this.lastPosX = evt.clientX
+                // this.lastPosY = evt.clientY
+            }
+        })
+
+        this.canvas.on('mouse:move', function(opt) {
+            if (this.isDragging) {
+                var e = opt.e
+                var vpt = this.viewportTransform
+                vpt[4] += e.clientX - this.lastPosX
+                // vpt[5] += e.clientY - this.lastPosY
+                this.requestRenderAll()
+                this.lastPosX = e.clientX
+                // this.lastPosY = e.clientY
+            }
+        })
+
+        this.canvas.on('mouse:up', function(opt) {
+            // on mouse up we want to recalculate new interaction
+            // for all objects, so we call setViewportTransform
+            this.setViewportTransform(this.viewportTransform)
+            this.isDragging = false
+            this.selection = true
         })
             
         this.rectangles = {}
@@ -184,7 +215,7 @@ class CanvasHandler {
         this.canvas.add(rect)
     }
 
-    zoomIn(delta) {
+    zoomOut(delta) {
         var zoom = this.canvas.getZoom()
         var dims = this.getDimensions()
         zoom *= 0.999 ** delta
@@ -193,16 +224,18 @@ class CanvasHandler {
         this.canvas.zoomToPoint({ x: dims["width"] / 2, y: dims["height"] / 2 }, zoom)
     }
     
-    zoomOut(delta) {
-        this.zoomIn(-delta)        
+    zoomIn(delta) {
+        this.zoomOut(-delta)        
     }
 
-    panLeft() {
-        
+    panLeft(delta) {
+        var vpt = this.canvas.viewportTransform
+        vpt[4] -= delta
+        this.canvas.setViewportTransform(vpt)
     }
 
-    panRight() {
-        
+    panRight(delta) {
+        this.panLeft(-delta)
     }
 }
 
@@ -215,10 +248,10 @@ $(document).on("turbo:load", function() {
     window.structure.setCanvasHandler(window.canvas_handler)
     window.canvas_handler.setStructure(window.structure)
 
-    $(".controls-zoom-in").on("click", () => { window.canvas_handler.zoomIn(-100) })
-    $(".controls-zoom-out").on("click", () => { window.canvas_handler.zoomOut(-100) })
-    $(".controls-pan-left").on("click", () => { window.canvas_handler.panLeft() })
-    $(".controls-pan-right").on("click", () => { window.canvas_handler.panRight() })
+    $(".controls-zoom-in").on("click", () => { window.canvas_handler.zoomIn(100) })
+    $(".controls-zoom-out").on("click", () => { window.canvas_handler.zoomOut(100) })
+    $(".controls-pan-left").on("click", () => { window.canvas_handler.panLeft(100) })
+    $(".controls-pan-right").on("click", () => { window.canvas_handler.panRight(100) })
     
     $(".part-form").attr("onsubmit", "formSubmit($(this))")
     
