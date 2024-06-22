@@ -95,6 +95,13 @@ class CanvasHandler {
         // set locks for whole selection, only X movement allowed
         this.canvas.on("selection:updated", (obj) => { this.selectionSetLocks(obj) });
         this.canvas.on("selection:created", (obj) => { this.selectionSetLocks(obj) });
+
+        this.canvas.on("mouse:wheel", (opt) => {
+            var delta = opt.e.deltaY
+            this.zoomIn(delta)
+            opt.e.preventDefault()
+            opt.e.stopPropagation()
+        })
             
         this.rectangles = {}
         
@@ -176,6 +183,27 @@ class CanvasHandler {
         this.rectangles[part.id] = rect
         this.canvas.add(rect)
     }
+
+    zoomIn(delta) {
+        var zoom = this.canvas.getZoom()
+        var dims = this.getDimensions()
+        zoom *= 0.999 ** delta
+        if (zoom > 10) zoom = 10
+        if (zoom < 0.1) zoom = 0.1
+        this.canvas.zoomToPoint({ x: dims["width"] / 2, y: dims["height"] / 2 }, zoom)
+    }
+    
+    zoomOut(delta) {
+        this.zoomIn(-delta)        
+    }
+
+    panLeft() {
+        
+    }
+
+    panRight() {
+        
+    }
 }
 
 $(document).on("turbo:load", function() {
@@ -186,6 +214,11 @@ $(document).on("turbo:load", function() {
 
     window.structure.setCanvasHandler(window.canvas_handler)
     window.canvas_handler.setStructure(window.structure)
+
+    $(".controls-zoom-in").on("click", () => { window.canvas_handler.zoomIn(-100) })
+    $(".controls-zoom-out").on("click", () => { window.canvas_handler.zoomOut(-100) })
+    $(".controls-pan-left").on("click", () => { window.canvas_handler.panLeft() })
+    $(".controls-pan-right").on("click", () => { window.canvas_handler.panRight() })
     
     $(".part-form").attr("onsubmit", "formSubmit($(this))")
     

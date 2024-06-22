@@ -16,3 +16,19 @@
   padding-bottom: .2em;
   padding-top: .2em;
 }
+
+.controls-panel {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+
+  & > a {
+    display: inline-block;
+    border: 1px solid var(--c-black);
+    border-radius: .2em;
+    background-color: var(--c-white);
+    font-weight: bold;
+    padding: 10px;
+    user-select: none;
+  }
+}
