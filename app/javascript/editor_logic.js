@@ -87,6 +87,8 @@ class CanvasHandler {
         this.canvas_id = canvas_id
         this.canvas = new fabric.Canvas(canvas_id)
 
+        this.beginning = true
+
         // set correct width/height for canvas (change on window resize)
         $(window).resize(() => { this.updateDimensions() })
         $(window).trigger("resize")
@@ -228,8 +230,14 @@ class CanvasHandler {
 
     updateDimensions() {
         let dims = this.getDimensions()
+        if (!this.beginning) {
+            var vpt = this.canvas.viewportTransform
+            vpt[5] -= (this.canvas.height - dims["height"]) / 2
+            this.canvas.setViewportTransform(vpt)
+        } else {
+            this.beginning = false
+        }
         this.canvas.setDimensions(dims)
-        // TODO: move all objects in the center
     }
 
     addPart(part) {
