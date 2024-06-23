@@ -32,10 +32,12 @@
       <input id="color" class="option" type="color" name="color">
 
       <input class="add-button" type="submit" value="Add">
-
-      <span>or search in database</span>
-      <input class="search-bar" type="text" name="search-query">
     </form>
+    <%= form_with url: search_parts_path, method: :post do |form| %>
+      <span>or search in database</span>
+      <%= form.search_field :query, oninput: "this.form.requestSubmit()", class: "search-bar" %>
+    <% end %>
+    <div id="search_results"></div>
   </div>
 
   <div class="panel calc-info-panel"></div>
