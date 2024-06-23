@@ -31,9 +31,12 @@
       <label class="option" for="color">Color</label>
       <input id="color" class="option" type="color" name="color">
 
-      <input class="add-button" type="submit" value="Add">
+      <input class="add-button hover-lighter-2" type="submit" value="Add">
     </form>
-    <%= form_with url: search_parts_path, method: :post do |form| %>
+
+    <div class="split-line"></div>
+
+    <%= form_with url: search_parts_path, method: :post, class: "search-form" do |form| %>
       <span>or search in database</span>
       <%= form.search_field :query, oninput: "this.form.requestSubmit()", class: "search-bar" %>
     <% end %>

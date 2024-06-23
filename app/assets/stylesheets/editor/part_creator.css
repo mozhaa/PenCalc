@@ -2,36 +2,70 @@
   font-size: 1rem;
   padding: 1em;
   padding-top: .5em;
+}
 
-  & > form {
-    display: grid;
-    grid-template-rows: repeat(6, min-content);
-    grid-template-columns: min-content 1fr;
-    column-gap: 1em;
-    row-gap: 6px;
+.part-form {
+  display: grid;
+  grid-template-rows: repeat(5, min-content);
+  grid-template-columns: min-content 1fr;
+  column-gap: 1em;
+  row-gap: 6px;
 
-    & > h3,
-    & .add-button,
-    & > span,
-    & .search-bar {
-      grid-column: span 2;
-    }
+  & .add-button {
+    grid-column: span 2;
+    width: 70%;
+    padding: .4em;
+    background-color: var(--c-gray);
+    color: var(--c-white);
+    border-radius: .4em;
+    margin: 1em auto;
+  }
+  
+  & h3 {
+    grid-column: span 2;
+    margin: 0;
+    margin-bottom: .5em;
+  }
 
-    & label.option {
-      display: block;
-      text-align: end;
-    }
+  & label.option {
+    display: block;
+    text-align: end;
+  }
 
-    & > h3 {
-      margin: 0;
-      margin-bottom: .5em;
-    }
+  & input[type="text"].option {
+    font-size: 1rem;
+    background-color: transparent;
+    border: 0;
+    outline: 0;
+  }
+}
 
-    & input[type="text"].option {
-      font-size: 1rem;
-      background-color: transparent;
-      border: 0;
+.split-line {
+  width: 90%;
+  height: 1px;
+  background-color: var(--c-gray);
+  margin: 0 auto;
+}
+
+.search-form {
+  margin-top: .5em;
+
+  & span {
+    display: block;
+    text-align: center;
+  }
+
+  & input {
+    font-size: 1.1rem;
+    margin-top: .5em;
+    width: 100%;
+    border: 1px solid black;
+    border-radius: .2em;
+    padding: .1em .2em;
+
+    &:focus {
       outline: 0;
+      border-color: rgb(79, 140, 219);
     }
   }
 }
