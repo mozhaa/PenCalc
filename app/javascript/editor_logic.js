@@ -19,28 +19,17 @@ $(document).on("turbo:load", function() {
     // all operations with parts should be performed using this handler
     let parts_handler = new PartsHandler("parts-list")
 
+    // part form handler
+    let form_handler = new FormHandler("part-form", (part) => { parts_handler.addPart(part) })
+
+    // make form handler global for use in search bar
+    window.form_handler = form_handler
+
     // event bindings
     parts_handler.addEventListener("part:add", (part) => { canvas_handler.addPart(part) })
     selectable_list.addEventListener("selection:change", (ids) => { canvas_handler.setSelectionByIds(ids) })
     canvas_handler.addEventListener("selection:change", (ids) => { selectable_list.setSelectionByIds(ids) })
     canvas_handler.addEventListener("part:move", (id, offset) => { parts_handler.movePart(id, offset) })
-    
-    // part form submit handler
-    $("#part-form").on("submit", function (event) {
-        let form = $(event.target)
-        try {
-            parts_handler.addPart(Part.byForm(form))
-            // clear fields after success
-            form.find(":input.option[type=text]").val("").trigger("input")
-        } catch (e) {
-            if (e instanceof ArgumentException) {
-                // alert error messages from part constructor
-                alert(e.message)
-            } else {
-                throw e
-            }
-        }
-    })
     
     // load structure from structure element
     parts_handler.loadStructure($("#data-element").data("structure"))
