@@ -11,23 +11,20 @@ $(document).on("turbo:load", function() {
             pan_right: "controls-pan-right",
         }
     )
-    
-    // pass to parts handler parts list id
-    // all operations with parts should be performed with this handler
-    let parts_handler = new PartsHandler("parts-list")
-    // bind part:add 'parts_handler -> canvas'
-    parts_handler.addEventListener("part:add", (part) => { canvas_handler.addPart(part) })
 
-    // load structure from structure element
-    parts_handler.loadStructure($("#data-element").data("structure"))
-    
     // selectable list for parts list element
     let selectable_list = new SelectableList("parts-list")
-    // bind selection 'list -> canvas'
-    selectable_list.addEventListener("selection:change", (ids) => { canvas_handler.setSelectionByIds(ids) })
-    // bind selection 'canvas -> list'
-    canvas_handler.addEventListener("selection:change", (ids) => { selectable_list.setSelectionByIds(ids) })
+    
+    // parts handler
+    // all operations with parts should be performed using this handler
+    let parts_handler = new PartsHandler("parts-list")
 
+    // event bindings
+    parts_handler.addEventListener("part:add", (part) => { canvas_handler.addPart(part) })
+    selectable_list.addEventListener("selection:change", (ids) => { canvas_handler.setSelectionByIds(ids) })
+    canvas_handler.addEventListener("selection:change", (ids) => { selectable_list.setSelectionByIds(ids) })
+    canvas_handler.addEventListener("part:move", (id, offset) => { parts_handler.movePart(id, offset) })
+    
     // part form submit handler
     $("#part-form").on("submit", function (event) {
         let form = $(event.target)
@@ -44,6 +41,9 @@ $(document).on("turbo:load", function() {
             }
         }
     })
+    
+    // load structure from structure element
+    parts_handler.loadStructure($("#data-element").data("structure"))
     
     // debug
     parts_handler.addPart(new Part({

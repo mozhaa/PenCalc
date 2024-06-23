@@ -27,6 +27,14 @@ class PartsHandler {
         this.eventHandlers["part:add"](part)
     }
     
+    movePart(id, offset) {
+        this.parts = this.parts.map((part) => {
+            if (part.id == id)
+                part.pos += offset
+            return part
+        })
+    }
+
     deletePart(id) {
         this.parts.filter((part) => part.id != id)
         this.#show()

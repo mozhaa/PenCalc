@@ -12,7 +12,8 @@ class CanvasHandler {
 
     constructor(canvas, controls) {
         this.eventHandlers = {
-            "selection:change": function(ids) {}
+            "selection:change": function(ids) {},
+            "part:move": function(id, offset) {}
         }
 
         // initialize fabric.js canvas
@@ -31,6 +32,35 @@ class CanvasHandler {
         })
         $(`#${controls["pan_right"]}`).on("click", () => { 
             this.panRight(CanvasHandler.controlsValues["pan_right"]) 
+        })
+
+        // save mouse position on mouse:down
+        this.canvas.on("mouse:down", (event) => {
+            this.lastPos = event.absolutePointer.x
+        })
+
+        // if any object moved when dragging, need to update pos
+        this.canvas.on("object:moving", (event) => {
+            this.isMoving = true
+        })
+        
+        // update pos, using saves and current mouse positions 
+        this.canvas.on("mouse:up", (event) => {
+            if (!this.isMoving) return
+
+            let selection = this.canvas.getActiveObject()
+            let offset = event.absolutePointer.x - this.lastPos
+            if (selection._objects) {
+                // selection consists of many objects
+                selection._objects.forEach((obj) => {
+                    this.eventHandlers["part:move"](obj.part_id, offset)
+                })
+            } else {
+                // selection is one object
+                this.eventHandlers["part:move"](selection.part_id, offset)
+            }
+
+            this.isMoving = false
         })
 
         // bind mouse events to pan/zoom
