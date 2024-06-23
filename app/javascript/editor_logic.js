@@ -12,10 +12,12 @@ $(document).on("turbo:load", function() {
         }
     )
     
-    // pass to parts handler parts list id and canvas handler
+    // pass to parts handler parts list id
     // all operations with parts should be performed with this handler
-    let parts_handler = new PartsHandler("parts-list", canvas_handler)
-    
+    let parts_handler = new PartsHandler("parts-list")
+    // bind part:add 'parts_handler -> canvas'
+    parts_handler.addEventListener("part:add", (part) => { canvas_handler.addPart(part) })
+
     // load structure from structure element
     parts_handler.loadStructure($("#data-element").data("structure"))
     
@@ -28,7 +30,7 @@ $(document).on("turbo:load", function() {
 
     // part form submit handler
     $("#part-form").on("submit", function (event) {
-        let form = event.target
+        let form = $(event.target)
         try {
             parts_handler.addPart(Part.byForm(form))
             // clear fields after success

@@ -1,9 +1,20 @@
 class PartsHandler {
-    constructor(parts_list_id, canvas_handler) {
+    constructor(parts_list_id) {
+        this.eventHandlers = {
+            "part:add": function(part) {},
+            "part:delete": function(id) {}
+        }
+
         this.parts_list = $(`#${parts_list_id}`)
-        this.canvas_handler = canvas_handler
         
         this.parts = []
+    }
+
+    addEventListener(event_name, handler) {
+        if (!(event_name in this.eventHandlers)) {
+            throw new Error(`Unknown event: ${event_name}`)
+        }
+        this.eventHandlers[event_name] = handler
     }
 
     loadStructure(s) {
@@ -11,15 +22,15 @@ class PartsHandler {
     }
 
     addPart(part) {
-        this.canvas_handler.addPart(part)
         this.parts.push(part)
         this.#show()
+        this.eventHandlers["part:add"](part)
     }
-
+    
     deletePart(id) {
-        this.canvas_handler.deletePart(id)
         this.parts.filter((part) => part.id != id)
         this.#show()
+        this.eventHandlers["part:delete"](id)
     }
 
     #show() {
