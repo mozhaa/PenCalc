@@ -21,16 +21,16 @@ class CanvasHandler {
 
         // bind control-buttons
         $(`#${controls["zoom_in"]}`).on("click", () => { 
-            window.canvas_handler.zoomIn(CanvasHandler.controlsValues["zoom_in"]) 
+            this.zoomIn(CanvasHandler.controlsValues["zoom_in"]) 
         })
         $(`#${controls["zoom_out"]}`).on("click", () => { 
-            window.canvas_handler.zoomOut(CanvasHandler.controlsValues["zoom_out"]) 
+            this.zoomOut(CanvasHandler.controlsValues["zoom_out"]) 
         })
         $(`#${controls["pan_left"]}`).on("click", () => { 
-            window.canvas_handler.panLeft(CanvasHandler.controlsValues["pan_left"]) 
+            this.panLeft(CanvasHandler.controlsValues["pan_left"]) 
         })
         $(`#${controls["pan_right"]}`).on("click", () => { 
-            window.canvas_handler.panRight(CanvasHandler.controlsValues["pan_right"]) 
+            this.panRight(CanvasHandler.controlsValues["pan_right"]) 
         })
 
         // bind mouse events to pan/zoom
@@ -175,8 +175,8 @@ class CanvasHandler {
         let height = this.canvas.height
         let zoom = this.canvas.getZoom()
         zoom *= 0.999 ** delta
-        zoom = Math.max(zoom, CanvasHandler.zoomMax)
-        zoom = Math.min(zoom, CanvasHandler.zoomMin)
+        zoom = Math.min(zoom, CanvasHandler.zoomMax)
+        zoom = Math.max(zoom, CanvasHandler.zoomMin)
         this.canvas.zoomToPoint({ x: width / 2, y: height / 2 }, zoom)
     }
     
