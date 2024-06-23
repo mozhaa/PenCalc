@@ -31,11 +31,18 @@
       <label class="option" for="color">Color</label>
       <input id="color" class="option" type="color" name="color">
 
-      <input class="add-button" type="submit" value="Add">
-
-      <span>or search in database</span>
-      <input class="search-bar" type="text" name="search-query">
+      <input class="add-button hover-lighter-2" type="submit" value="Add">
     </form>
+
+    <div class="split-line"></div>
+
+    <%= form_with url: search_parts_path, method: :post, class: "search-form" do |form| %>
+      <span>or search in database</span>
+      <div class="search-bar-container">
+        <%= form.search_field :query, oninput: "this.form.requestSubmit()", id: "search-bar", class: "search-bar", autocomplete: "off" %>
+        <ul class="search-results" id="search_results"></ul>
+      </div>
+    <% end %>
   </div>
 
   <div class="panel calc-info-panel"></div>

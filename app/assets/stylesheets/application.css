@@ -44,21 +44,21 @@ body {
 
 .hover-lighter-1 {
   &:hover {
-    filter: brightness(105%);
+    filter: brightness(120%);
   }
 
   &:active {
-    filter: brightness(110%);
+    filter: brightness(140%);
   }
 }
 
 .hover-lighter-2 {
   &:hover {
-    filter: brightness(110%);
+    filter: brightness(130%);
   }
 
   &:active {
-    filter: brightness(120%);
+    filter: brightness(160%);
   }
 }
 

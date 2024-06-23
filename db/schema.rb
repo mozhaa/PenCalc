@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_15_191414) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_23_105036) do
   create_table "mods", force: :cascade do |t|
     t.string "name", null: false
     t.text "structure", null: false
@@ -18,6 +18,16 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_15_191414) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["author_user_id"], name: "index_mods_on_author_user_id"
+  end
+
+  create_table "parts", force: :cascade do |t|
+    t.string "name", null: false
+    t.float "mass", null: false
+    t.float "width", null: false
+    t.string "color", null: false
+    t.boolean "verified", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|
