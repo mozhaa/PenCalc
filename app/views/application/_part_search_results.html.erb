@@ -1,5 +1,5 @@
 <% @results.each do |r| %>
-  <li class="query-result hover-darker-1 <%= if r.verified then "verified" end %>" onmousedown="$(`#search-bar`).val('');window.form_handler.fillForm({name: <%= r.name %>, mass: <%= r.mass %>, width: <%= r.width %>})">
+  <li class="query-result hover-darker-1 <%= if r.verified then "verified" end %>" onmousedown="window.form_handler.fillForm({name: <%= r.name %>, mass: <%= r.mass %>, width: <%= r.width %>});$(`#search-bar`).val('').trigger('input')">
     <span class="name"><%= r.name %></span>
     <span class="mass"><%= r.mass %> g</span>
     <span class="width"><%= r.width %> cm</span>
