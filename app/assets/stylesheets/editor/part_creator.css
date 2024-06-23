@@ -38,6 +38,11 @@
     border: 0;
     outline: 0;
   }
+
+  & input[type="color"] {
+    height: 1.5em;
+    width: 8em;
+  }
 }
 
 .split-line {
