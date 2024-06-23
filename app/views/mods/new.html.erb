@@ -38,9 +38,11 @@
 
     <%= form_with url: search_parts_path, method: :post, class: "search-form" do |form| %>
       <span>or search in database</span>
-      <%= form.search_field :query, oninput: "this.form.requestSubmit()", class: "search-bar" %>
+      <div class="search-bar-container">
+        <%= form.search_field :query, oninput: "this.form.requestSubmit()", class: "search-bar", autocomplete: "off" %>
+        <ul class="search-results" id="search_results"></ul>
+      </div>
     <% end %>
-    <div id="search_results"></div>
   </div>
 
   <div class="panel calc-info-panel"></div>

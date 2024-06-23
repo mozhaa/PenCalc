@@ -1,5 +1,7 @@
-Search results
-<%= @results.each do |r| %>
-  <%= r %>
+<% @results.each do |r| %>
+  <li class="query-result hover-darker-1 <%= if r.verified then "verified" end %>">
+    <span class="name"><%= r.name %></span>
+    <span class="mass"><%= r.mass %> g</span>
+    <span class="width"><%= r.width %> cm</span>
+  </li>
 <% end %>
-end
