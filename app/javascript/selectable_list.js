@@ -15,7 +15,7 @@ class SelectableList {
         this.eventHandlers[event_name] = handler
     }
 
-    setSelection(ids) {
+    setSelectionByIds(ids) {
         // discard selection
         this.object.children("li").removeClass("sl-selected")
         // set new selection
@@ -44,7 +44,7 @@ class SelectableList {
 
                 // iterate through all elements
                 // set activate = true when between
-                activate = false
+                let activate = false
                 this.object.children("li").each((_, elem) => {
                     if ($(elem).hasClass("sl-temporary") || $(elem).hasClass("sl-current")) {
                         if ($(elem).hasClass("sl-temporary") && $(elem).hasClass("sl-current")) {
@@ -77,10 +77,10 @@ class SelectableList {
         }
 
         // trigger event selection:change
-        let selected_ids = []
+        let ids = []
         this.object.children("li.sl-selected").each((_, elem) => {
-            selected_ids.push($(elem).data("id"))
+            ids.push($(elem).data("id"))
         })
-        this.eventHandlers["selection:change"](selected_ids)
+        this.eventHandlers["selection:change"](ids)
     }
 }
