@@ -11,11 +11,12 @@ body,
 .editor-layout {
   display: grid;
   grid-template-areas: 
-    "pl cv cv"
-    "np cl mn";
+    "pl tl"
+    "pl cv"
+    "np cl";
 
-  grid-template-columns: minmax(20em, 2fr) 8fr minmax(10em, 1fr);
-  grid-template-rows: 5fr minmax(min-content, 2fr);
+  grid-template-columns: minmax(20em, 2fr) 8fr;
+  grid-template-rows: min-content 5fr minmax(min-content, 2fr);
   gap: 3px;
 
   background-color: var(--c-black);
@@ -42,6 +43,6 @@ body,
   grid-area: cl;
 }
 
-.menu-panel {
-  grid-area: mn;
+.tools-panel {
+  grid-area: tl;
 }

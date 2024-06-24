@@ -1,0 +1,54 @@
+.tools-panel {
+  display: flex;
+  gap: 1ch;
+  padding: .2em 1ch;
+}
+
+.tool-button {
+  padding: .2em 2ch;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 1.1rem;
+  user-select: none;
+}
+
+.duplicate-tool {
+  background-color: rgb(80, 194, 194);
+  color: white;
+}
+
+.delete-tool {
+  background-color: hsl(0, 71%, 57%);
+  color: white;
+}
+
+.mirror-tool {
+  background-color: #707070;
+  color: white;
+}
+
+.cut-tool {
+  background-color: hsl(125, 49%, 54%);
+  color: white;
+}
+
+.file-options {
+  margin-left: auto;
+  font-weight: normal;
+}
+
+.file-options ~ .file-options {
+  margin-left: 0;
+}
+
+.new-tool {
+  background-color: hsl(135, 63%, 87%);
+}
+
+.open-tool {
+  background-color: hwb(199 79% 5%);
+}
+
+.save-tool {
+  background-color: hwb(54 79% 5%);
+}

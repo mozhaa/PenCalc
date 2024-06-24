@@ -4,6 +4,17 @@
     <ul class="parts-list" id="parts-list"></ul>
   </div>
 
+  <div class="panel tools-panel">
+    <div class="tool-button duplicate-tool hover-lighter-1">Duplicate</div>
+    <div class="tool-button delete-tool hover-lighter-1">Delete</div>
+    <div class="tool-button mirror-tool hover-lighter-1">Mirror</div>
+    <div class="tool-button cut-tool hover-lighter-1">Cut</div>
+
+    <div class="tool-button file-options hover-darker-1 new-tool">New</div>
+    <div class="tool-button file-options hover-darker-1 open-tool">Open</div>
+    <div class="tool-button file-options hover-darker-1 save-tool">Save</div>
+  </div>
+
   <div class="panel canvas-panel">
     <canvas id="editor-canvas"></canvas>
     <input class="mod-name-input" type="text" name="mod-name" placeholder="Type mod name here...">
@@ -46,13 +57,6 @@
   </div>
 
   <div class="panel calc-info-panel"></div>
-
-  <div class="panel menu-panel">
-    <h2>Menu</h2>
-    <button>New</button>
-    <button>Open</button>
-    <button>Save</button>
-  </div>
 </div>
 
 <%= content_tag :div, id: "data-element", style: "display: none", data: {structure: @structure} do %>
