@@ -9,6 +9,7 @@ class CanvasHandler {
     }
     static zoomMax = 10
     static zoomMin = 0.1
+    static panMax = 5000
 
     constructor(canvas, controls) {
         this.eventHandlers = {
@@ -75,29 +76,28 @@ class CanvasHandler {
             opt.e.stopPropagation()
         })
 
-        this.canvas.on("mouse:down", function(opt) {
+        this.canvas.on("mouse:down", (opt) => {
             // panning is alt+drag
             if (opt.e.altKey === true) {
-                this.isDragging = true
-                this.selection = false
-                this.lastPosX = opt.e.clientX
+                this.canvas.isDragging = true
+                this.canvas.selection = false
+                this.canvas.lastPosX = opt.e.clientX
             }
         })
 
-        this.canvas.on('mouse:move', function(opt) {
-            if (this.isDragging) {
-                this.viewportTransform[4] += opt.e.clientX - this.lastPosX
-                this.requestRenderAll()
-                this.lastPosX = opt.e.clientX
+        this.canvas.on('mouse:move', (opt) => {
+            if (this.canvas.isDragging) {
+                this.panLeft(opt.e.clientX - this.canvas.lastPosX)
+                this.canvas.requestRenderAll()
+                this.canvas.lastPosX = opt.e.clientX
             }
         })
 
-        this.canvas.on('mouse:up', function(opt) {
+        this.canvas.on('mouse:up', (opt) => {
             // on mouse up we want to recalculate new interaction
             // for all objects, so we call setViewportTransform
-            this.setViewportTransform(this.viewportTransform)
-            this.isDragging = false
-            this.selection = true
+            this.canvas.isDragging = false
+            this.canvas.selection = true
         })
 
         // update dimensions and Y-pan on each window resize
@@ -109,7 +109,7 @@ class CanvasHandler {
 
         // draw horizontal axis
         this.canvas.add(new fabric.Line(
-            [-10000, 0, 10000, 0], 
+            [-CanvasHandler.panMax * 3, 0, CanvasHandler.panMax * 3, 0], 
             { "stroke": "#111", "strokeWidth": 2, "selectable": false}
         ))
 
@@ -221,6 +221,15 @@ class CanvasHandler {
     panLeft(delta) {
         let vpt = this.canvas.viewportTransform
         vpt[4] += delta
+        let lp = { x: 0, y: 0 }
+        let rp = { x: this.canvas.width, y: 0 }
+        let inv = fabric.util.invertTransform(vpt)
+        let tlp = fabric.util.transformPoint(lp, inv) 
+        let trp = fabric.util.transformPoint(rp, inv)
+        if (tlp.x < -CanvasHandler.panMax || trp.x > CanvasHandler.panMax) {
+            vpt[4] -= delta
+            return
+        }
         this.canvas.setViewportTransform(vpt)
     }
     
