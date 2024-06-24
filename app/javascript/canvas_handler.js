@@ -66,7 +66,11 @@ class CanvasHandler {
         // bind mouse events to pan/zoom
         this.canvas.on("mouse:wheel", (opt) => {
             var delta = opt.e.deltaY
-            this.zoomOut(delta)
+            if (opt.e.shiftKey) {
+                this.panLeft(delta)
+            } else {
+                this.zoomOut(delta)
+            }
             opt.e.preventDefault()
             opt.e.stopPropagation()
         })
