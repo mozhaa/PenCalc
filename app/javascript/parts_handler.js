@@ -1,41 +1,19 @@
 class PartsHandler {
-    constructor(parts_list_id) {
-        this.eventHandlers = {
-            "part:add": { 
-                handler: function(params) {}, 
-                flag: false 
-            },
-            "part:delete": { 
-                handler: function(params) {}, 
-                flag: false 
-            },
-            "part:move": { 
-                handler: function(params) {}, 
-                flag: false 
-            },
-        }
-
+    constructor(parts_list_id, parts_list_r) {
         this.parts_list = $(`#${parts_list_id}`)
         
+        this.parts_list_r = parts_list_r
+        this.parts_list_r.setAction("part:add", (params) => {
+            this.#addPart(params["part"])
+        })
+        this.parts_list_r.setAction("part:delete", (params) => {
+            this.#deletePart(params["id"])
+        })
+        this.parts_list_r.setAction("part:move", (params) => {
+            this.#movePart(params["id"], params["offset"])
+        })
+
         this.parts = []
-    }
-
-    addEventListener(event_name, handler) {
-        if (!(event_name in this.eventHandlers)) {
-            throw new Error(`Unknown event: ${event_name}`)
-        }
-        this.eventHandlers[event_name].handler = handler
-    }
-
-    #triggerEvent(event_name, params) {
-        let h = this.eventHandlers[event_name]
-        h.flag = true
-        h.handler(params)
-        h.flag = false
-    }
-
-    #needToAnswer(event_name) {
-        return !this.eventHandlers[event_name].flag
     }
 
     loadStructure(s) {
@@ -46,28 +24,39 @@ class PartsHandler {
         return this.parts.find((part) => part.id == id)
     }
 
-    addPart(part) {
+    #addPart(part) {
         this.parts.push(part)
         this.#show()
-        this.#triggerEvent("part:add", { part: part })
+    }
+
+    addPart(part) {
+        this.#addPart(part)
+        this.parts_list_r.sendUpdate("part:add", { part: part })
         return part.id
     }
     
-    movePart(id, offset) {
+    #movePart(id, offset) {
         this.parts = this.parts.map((part) => {
             if (part.id == id)
                 part.pos += offset
             return part
         })
-        this.#triggerEvent("part:add", { id: id, offset: offset })
+    }
+
+    movePart(id, offset) {
+        this.#movePart(id, offset)
+        this.parts_list_r.sendUpdate("part:move", { id: id, offset: offset })
         return id
     }
 
-    deletePart(id) {
-        this.parts.filter((part) => part.id != id)
+    #deletePart(id) {
+        this.parts = this.parts.filter((part) => part.id != id)
         this.#show()
-        if (!(this.silents["part:delete"]))
-            this.eventHandlers["part:delete"](id)
+    }
+
+    deletePart(id) {
+        this.#deletePart(id)
+        this.parts_list_r.sendUpdate("part:delete", { id: id })
     }
 
     mirrorPart(id, x) {
@@ -79,7 +68,7 @@ class PartsHandler {
         return this.addPart(Part.copy(this.getPartById(id)))
     }
     
-    // 
+    // mass actions
 
     deleteParts(ids) {
         ids.forEach((id) => { this.deletePart(id) })

@@ -3,6 +3,7 @@ $(document).on("turbo:load", function() {
     if (!(window.controller == "mods" && window.action === "new")) return
     
     let selection = new Resource()
+    let parts_list = new Resource()
 
     // pass to canvas handler canvas id and control-buttons ids
     let canvas_handler = new CanvasHandler("editor-canvas",
@@ -12,7 +13,8 @@ $(document).on("turbo:load", function() {
             pan_left: "controls-pan-left",
             pan_right: "controls-pan-right",
         },
-        selection.createResourceHandler()
+        selection.createResourceHandler(),
+        parts_list.createResourceHandler()
     )
 
     // selectable list for parts list element
@@ -20,7 +22,7 @@ $(document).on("turbo:load", function() {
     
     // parts handler
     // all operations with parts should be performed using this handler
-    let parts_handler = new PartsHandler("parts-list")
+    let parts_handler = new PartsHandler("parts-list", parts_list.createResourceHandler())
 
     // part form handler
     let form_handler = new FormHandler("part-form", (part) => { parts_handler.addPart(part) })
@@ -28,14 +30,6 @@ $(document).on("turbo:load", function() {
     // make form handler global for use in search bar
     window.form_handler = form_handler
 
-    // event bindings
-    parts_handler.addEventListener("part:add", (part) => { canvas_handler.addPart(part) })
-    parts_handler.addEventListener("part:move", (id, offset) => {canvas_handler.movePart(id, offset)})
-    parts_handler.addEventListener("part:delete", (id) => {canvas_handler.deletePart(id)})
-    selectable_list.addEventListener("selection:change", (ids) => { canvas_handler.setSelectionByIds(ids) })
-    canvas_handler.addEventListener("selection:change", (ids) => { selectable_list.setSelectionByIds(ids) })
-    canvas_handler.addEventListener("part:move", (id, offset) => { parts_handler.inCave("part:move", () => { parts_handler.movePart(id, offset) })})
-    
     // load structure from structure element
     parts_handler.loadStructure($("#data-element").data("structure"))
 

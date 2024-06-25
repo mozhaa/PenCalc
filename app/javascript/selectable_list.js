@@ -3,7 +3,7 @@ class SelectableList {
         this.object = $(`#${object_id}`)
         this.selection_r = selection_r
         this.selection_r.setAction("selection:set", (params) => {
-            this.setSelectionByIds(params[ids])
+            this.setSelectionByIds(params["ids"])
         })
 
         this.object.on("click", (event) => { this.#clickHandle(event) })
