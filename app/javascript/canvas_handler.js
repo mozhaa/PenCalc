@@ -11,15 +11,15 @@ class CanvasHandler {
     static zoomMin = 0.1
     static panMax = 5000
 
-    constructor(canvas, controls) {
-        this.eventHandlers = {
-            "selection:change": function(ids) {},
-            "part:move": function(id, offset) {}
-        }
-
+    constructor(canvas, controls, selection_r) {
         // initialize fabric.js canvas
         this.canvas = new fabric.Canvas(canvas)
         this.canvas_id = canvas
+
+        this.selection_r = selection_r
+        this.selection_r.setAction("selection:set", (params) => {
+            this.setSelectionByIds(params[ids])
+        })
 
         // bind control-buttons
         $(`#${controls["zoom_in"]}`).on("click", () => { 
@@ -126,8 +126,8 @@ class CanvasHandler {
                 if (obj.selected)
                     obj.selected.forEach((rect) => { ids.push(rect.part_id) })
 
-                // trigger selection:change event
-                this.eventHandlers["selection:change"](ids)
+                // trigger selection resource update
+                this.selection_r.sendUpdate("selection:set", { ids: ids })
             }
         }
         this.canvas.on("selection:updated", selectionHandler);
@@ -142,13 +142,6 @@ class CanvasHandler {
         
         this.canvas.renderAll()
     }
-
-    addEventListener(event_name, handler) {
-        if (!(event_name in this.eventHandlers)) {
-            throw new Error(`Unknown event: ${event_name}`)
-        }
-        this.eventHandlers[event_name] = handler
-    }
     
     updateDimensions() {
         // set canvas dimensions equal to parent container
@@ -161,7 +154,7 @@ class CanvasHandler {
         this.canvas.setViewportTransform(vpt)
     }
     setSelectionByIds(ids) {
-        // disable selection:change triggering for manual changing
+        // disable selection:set triggering for manual changing
         this.listenSelections = false
         
         // remove previous selection

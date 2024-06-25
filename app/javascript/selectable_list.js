@@ -1,18 +1,12 @@
 class SelectableList {
-    constructor(object_id) {
+    constructor(object_id, selection_r) {
         this.object = $(`#${object_id}`)
-        this.eventHandlers = {
-            "selection:change": function(selected_ids) {}
-        }
+        this.selection_r = selection_r
+        this.selection_r.setAction("selection:set", (params) => {
+            this.setSelectionByIds(params[ids])
+        })
 
         this.object.on("click", (event) => { this.#clickHandle(event) })
-    }
-
-    addEventListener(event_name, handler) {
-        if (!(event_name in this.eventHandlers)) {
-            throw new Error(`Unknown event: ${event_name}`)
-        }
-        this.eventHandlers[event_name] = handler
     }
 
     setSelectionByIds(ids) {
@@ -84,7 +78,7 @@ class SelectableList {
             part.addClass("sl-current")
         }
 
-        // trigger event selection:change
-        this.eventHandlers["selection:change"](this.getSelectionIds())
+        // trigger selection resource update
+        this.selection_r.sendUpdate("selection:set", { ids: this.getSelectionIds() })
     }
 }

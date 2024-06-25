@@ -2,6 +2,8 @@ $(document).on("turbo:load", function() {
     // run only on 'Editor' page
     if (!(window.controller == "mods" && window.action === "new")) return
     
+    let selection = new Resource()
+
     // pass to canvas handler canvas id and control-buttons ids
     let canvas_handler = new CanvasHandler("editor-canvas",
         {
@@ -9,11 +11,12 @@ $(document).on("turbo:load", function() {
             zoom_out: "controls-zoom-out",
             pan_left: "controls-pan-left",
             pan_right: "controls-pan-right",
-        }
+        },
+        selection.createResourceHandler()
     )
 
     // selectable list for parts list element
-    let selectable_list = new SelectableList("parts-list")
+    let selectable_list = new SelectableList("parts-list", selection.createResourceHandler())
     
     // parts handler
     // all operations with parts should be performed using this handler
