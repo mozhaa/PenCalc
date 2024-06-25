@@ -22,7 +22,10 @@ $(document).on("turbo:load", function() {
     
     // parts handler
     // all operations with parts should be performed using this handler
-    let parts_handler = new PartsHandler("parts-list", parts_list.createResourceHandler())
+    let parts_handler = new PartsHandler("parts-list", 
+        selection.createResourceHandler(), 
+        parts_list.createResourceHandler()
+    )
 
     // part form handler
     let form_handler = new FormHandler("part-form", (part) => { parts_handler.addPart(part) })

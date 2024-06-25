@@ -1,5 +1,5 @@
 class PartsHandler {
-    constructor(parts_list_id, parts_list_r) {
+    constructor(parts_list_id, selection_r, parts_list_r) {
         this.parts_list = $(`#${parts_list_id}`)
         
         this.parts_list_r = parts_list_r
@@ -12,6 +12,9 @@ class PartsHandler {
         this.parts_list_r.setAction("part:move", (params) => {
             this.#movePart(params["id"], params["offset"])
         })
+
+        this.selection_r = selection_r
+        this.selection_r.setAction("selection:set", (params) => {})
 
         this.parts = []
     }
@@ -79,11 +82,19 @@ class PartsHandler {
     }
 
     mirrorParts(ids, x) {
-        return ids.map((id) => this.mirrorPart(id, x))
+        let new_ids = ids.map((id) => this.mirrorPart(id, x))
+        
+        // select created objects
+        this.selection_r.sendUpdate("selection:set", { ids: new_ids })
+        return new_ids
     }
 
     duplicateParts(ids) {
-        return ids.map((id) => this.duplicatePart(id))
+        let new_ids = ids.map((id) => this.duplicatePart(id))
+        
+        // select created objects
+        this.selection_r.sendUpdate("selection:set", { ids: new_ids })
+        return new_ids
     }
 
     #show() {
