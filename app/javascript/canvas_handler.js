@@ -203,6 +203,15 @@ class CanvasHandler {
         rect.part_id = part.id
         this.canvas.add(rect)
     }
+
+    movePart(id, offset) {
+        if (!this.#needToAnswer("part:move")) return
+        this.rectangles[id].left += offset
+    }
+
+    deletePart(id) {
+        this.canvas.remove(this.rectangles[id])
+    }
     
     zoomOut(delta) {
         let width = this.canvas.width

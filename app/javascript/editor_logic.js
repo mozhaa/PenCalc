@@ -27,12 +27,22 @@ $(document).on("turbo:load", function() {
 
     // event bindings
     parts_handler.addEventListener("part:add", (part) => { canvas_handler.addPart(part) })
+    parts_handler.addEventListener("part:move", (id, offset) => {canvas_handler.movePart(id, offset)})
+    parts_handler.addEventListener("part:delete", (id) => {canvas_handler.deletePart(id)})
     selectable_list.addEventListener("selection:change", (ids) => { canvas_handler.setSelectionByIds(ids) })
     canvas_handler.addEventListener("selection:change", (ids) => { selectable_list.setSelectionByIds(ids) })
-    canvas_handler.addEventListener("part:move", (id, offset) => { parts_handler.movePart(id, offset) })
+    canvas_handler.addEventListener("part:move", (id, offset) => { parts_handler.inCave("part:move", () => { parts_handler.movePart(id, offset) })})
     
     // load structure from structure element
     parts_handler.loadStructure($("#data-element").data("structure"))
+
+    // bind tool buttons
+    $(".duplicate-tool").on("click", (event) => {
+        parts_handler.moveParts(parts_handler.duplicateParts(selectable_list.getSelectionIds()), 10)
+    })
+    $(".delete-tool").on("click", (event) => {
+        parts_handler.deleteParts(selectable_list.getSelectionIds())
+    })
     
     // debug
     parts_handler.addPart(new Part({

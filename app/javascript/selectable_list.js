@@ -24,6 +24,14 @@ class SelectableList {
         })
     }
 
+    getSelectionIds() {
+        let ids = []
+        this.object.children("li.sl-selected").each((_, elem) => {
+            ids.push($(elem).data("id"))
+        })
+        return ids
+    }
+
     #clickHandle(event) {
         // get part object
         let part = $(event.target).closest("li")
@@ -77,10 +85,6 @@ class SelectableList {
         }
 
         // trigger event selection:change
-        let ids = []
-        this.object.children("li.sl-selected").each((_, elem) => {
-            ids.push($(elem).data("id"))
-        })
-        this.eventHandlers["selection:change"](ids)
+        this.eventHandlers["selection:change"](this.getSelectionIds())
     }
 }
