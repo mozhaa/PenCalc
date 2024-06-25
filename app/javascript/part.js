@@ -32,6 +32,16 @@ class Part {
         return new Part(info)
     }
 
+    static copy(part) {
+        return new Part({
+            name: part.name + " copy",
+            mass: part.mass,
+            width: part.width,
+            pos: part.pos,
+            color: part.color
+        })
+    }
+
     html() {
         return `
 <li id="part-${this.id}" data-id="${this.id}" class="part hover-darker-1">

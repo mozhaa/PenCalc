@@ -11,15 +11,26 @@ class CanvasHandler {
     static zoomMin = 0.1
     static panMax = 5000
 
-    constructor(canvas, controls) {
-        this.eventHandlers = {
-            "selection:change": function(ids) {},
-            "part:move": function(id, offset) {}
-        }
-
+    constructor(canvas, controls, selection_r, parts_list_r) {
         // initialize fabric.js canvas
         this.canvas = new fabric.Canvas(canvas)
         this.canvas_id = canvas
+
+        this.selection_r = selection_r
+        this.selection_r.setAction("selection:set", (params) => {
+            this.setSelectionByIds(params["ids"])
+        })
+
+        this.parts_list_r = parts_list_r
+        this.parts_list_r.setAction("part:add", (params) => {
+            this.addPart(params["part"])
+        })
+        this.parts_list_r.setAction("part:delete", (params) => {
+            this.deletePart(params["id"])
+        })
+        this.parts_list_r.setAction("part:move", (params) => {
+            this.movePart(params["id"], params["offset"])
+        })
 
         // bind control-buttons
         $(`#${controls["zoom_in"]}`).on("click", () => { 
@@ -54,11 +65,11 @@ class CanvasHandler {
             if (selection._objects) {
                 // selection consists of many objects
                 selection._objects.forEach((obj) => {
-                    this.eventHandlers["part:move"](obj.part_id, offset)
+                    this.parts_list_r.sendUpdate("part:move", { id: obj.part_id, offset: offset })
                 })
             } else {
                 // selection is one object
-                this.eventHandlers["part:move"](selection.part_id, offset)
+                this.parts_list_r.sendUpdate("part:move", { id: selection.part_id, offset: offset })
             }
 
             this.isMoving = false
@@ -115,19 +126,18 @@ class CanvasHandler {
 
         // bind selection events for setting locks and triggering selection:change
         let selectionHandler = (obj) => {
-            if (obj.selected && obj.selected[0].group) {
+            let selected = this.canvas.getActiveObjects()
+            if (selected.length > 1 && selected[0].group) {
                 // if selection is not one object, set locks
                 // for one object locks are already set
-                this.#setLocks(obj.selected[0].group)
+                this.#setLocks(selected[0].group)
             }
             if (this.listenSelections) {
                 // get all ids from selection
-                let ids = [] 
-                if (obj.selected)
-                    obj.selected.forEach((rect) => { ids.push(rect.part_id) })
+                let ids = selected.map((obj) => obj.part_id)
 
-                // trigger selection:change event
-                this.eventHandlers["selection:change"](ids)
+                // trigger selection resource update
+                this.selection_r.sendUpdate("selection:set", { ids: ids })
             }
         }
         this.canvas.on("selection:updated", selectionHandler);
@@ -142,13 +152,6 @@ class CanvasHandler {
         
         this.canvas.renderAll()
     }
-
-    addEventListener(event_name, handler) {
-        if (!(event_name in this.eventHandlers)) {
-            throw new Error(`Unknown event: ${event_name}`)
-        }
-        this.eventHandlers[event_name] = handler
-    }
     
     updateDimensions() {
         // set canvas dimensions equal to parent container
@@ -160,8 +163,9 @@ class CanvasHandler {
         vpt[5] = this.canvas.height / 2
         this.canvas.setViewportTransform(vpt)
     }
+
     setSelectionByIds(ids) {
-        // disable selection:change triggering for manual changing
+        // disable selection:set triggering for manual changing
         this.listenSelections = false
         
         // remove previous selection
@@ -202,6 +206,14 @@ class CanvasHandler {
         this.rectangles[part.id] = rect
         rect.part_id = part.id
         this.canvas.add(rect)
+    }
+
+    movePart(id, offset) {
+        this.rectangles[id].left += offset
+    }
+
+    deletePart(id) {
+        this.canvas.remove(this.rectangles[id])
     }
     
     zoomOut(delta) {

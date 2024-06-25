@@ -2,6 +2,9 @@ $(document).on("turbo:load", function() {
     // run only on 'Editor' page
     if (!(window.controller == "mods" && window.action === "new")) return
     
+    let selection = new Resource()
+    let parts_list = new Resource()
+
     // pass to canvas handler canvas id and control-buttons ids
     let canvas_handler = new CanvasHandler("editor-canvas",
         {
@@ -9,15 +12,17 @@ $(document).on("turbo:load", function() {
             zoom_out: "controls-zoom-out",
             pan_left: "controls-pan-left",
             pan_right: "controls-pan-right",
-        }
+        },
+        selection.createResourceHandler(),
+        parts_list.createResourceHandler()
     )
 
     // selectable list for parts list element
-    let selectable_list = new SelectableList("parts-list")
+    let selectable_list = new SelectableList("parts-list", selection.createResourceHandler())
     
     // parts handler
     // all operations with parts should be performed using this handler
-    let parts_handler = new PartsHandler("parts-list")
+    let parts_handler = new PartsHandler("parts-list", parts_list.createResourceHandler())
 
     // part form handler
     let form_handler = new FormHandler("part-form", (part) => { parts_handler.addPart(part) })
@@ -25,14 +30,16 @@ $(document).on("turbo:load", function() {
     // make form handler global for use in search bar
     window.form_handler = form_handler
 
-    // event bindings
-    parts_handler.addEventListener("part:add", (part) => { canvas_handler.addPart(part) })
-    selectable_list.addEventListener("selection:change", (ids) => { canvas_handler.setSelectionByIds(ids) })
-    canvas_handler.addEventListener("selection:change", (ids) => { selectable_list.setSelectionByIds(ids) })
-    canvas_handler.addEventListener("part:move", (id, offset) => { parts_handler.movePart(id, offset) })
-    
     // load structure from structure element
     parts_handler.loadStructure($("#data-element").data("structure"))
+
+    // bind tool buttons
+    $(".duplicate-tool").on("click", (event) => {
+        parts_handler.moveParts(parts_handler.duplicateParts(selectable_list.getSelectionIds()), 10)
+    })
+    $(".delete-tool").on("click", (event) => {
+        parts_handler.deleteParts(selectable_list.getSelectionIds())
+    })
     
     // debug
     parts_handler.addPart(new Part({
