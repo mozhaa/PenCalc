@@ -175,8 +175,10 @@ class CanvasHandler {
         let rectangles = ids.map((id) => this.rectangles[id])
         
         // set new selection
-        let selection = new fabric.ActiveSelection(rectangles, { canvas: this.canvas })
-        this.canvas.setActiveObject(selection)
+        if (rectangles.length > 0) {
+            let selection = new fabric.ActiveSelection(rectangles, { canvas: this.canvas })
+            this.canvas.setActiveObject(selection)
+        }
         
         // render canvas
         this.canvas.requestRenderAll()

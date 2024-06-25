@@ -74,6 +74,9 @@ class PartsHandler {
     // mass actions
 
     deleteParts(ids) {
+        // drop selection
+        this.selection_r.sendUpdate("selection:set", { ids: [] })
+        
         ids.forEach((id) => { this.deletePart(id) })
     }
     
