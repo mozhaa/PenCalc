@@ -100,6 +100,11 @@ class PartsHandler {
         return new_ids
     }
 
+    mirrorPartsByRightEdge(ids) {
+        let x = Math.max(...this.parts.filter((part) => ids.includes(part.id)).map((part) => part.pos + part.width))
+        return this.mirrorParts(ids, x)
+    }
+
     #show() {
         this.parts_list.html("")
         this.parts.forEach((part) => {

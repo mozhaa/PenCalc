@@ -43,6 +43,12 @@ $(document).on("turbo:load", function() {
     $(".delete-tool").on("click", (event) => {
         parts_handler.deleteParts(selectable_list.getSelectionIds())
     })
+    $(".mirror-tool").on("click", (event) => {
+        parts_handler.mirrorPartsByRightEdge(parts_handler.duplicateParts(selectable_list.getSelectionIds()))
+    })
+
+    window.parts_handler = parts_handler
+    window.canvas_handler = canvas_handler
     
     // debug
     parts_handler.addPart(new Part({
@@ -70,7 +76,7 @@ $(document).on("turbo:load", function() {
         "name": "tip1",
         "mass": "3",
         "width": "1",
-        "pos": "0",
+        "pos": "-1",
         "color": "#ffff00"
     }))
     parts_handler.addPart(new Part({

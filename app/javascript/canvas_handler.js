@@ -61,7 +61,7 @@ class CanvasHandler {
             if (!this.isMoving) return
 
             let selection = this.canvas.getActiveObject()
-            let offset = event.absolutePointer.x - this.lastPos
+            let offset = (event.absolutePointer.x - this.lastPos) / CanvasHandler.xScale
             if (selection._objects) {
                 // selection consists of many objects
                 selection._objects.forEach((obj) => {
@@ -127,9 +127,8 @@ class CanvasHandler {
         // bind selection events for setting locks and triggering selection:change
         let selectionHandler = (obj) => {
             let selected = this.canvas.getActiveObjects()
-            if (selected.length > 1 && selected[0].group) {
-                // if selection is not one object, set locks
-                // for one object locks are already set
+            if (selected.length > 0 && selected[0].group) {
+                // if selection is not empty, set locks
                 this.#setLocks(selected[0].group)
             }
             if (this.listenSelections) {
@@ -193,7 +192,7 @@ class CanvasHandler {
         info["height"] = part.mass / part.width * CanvasHandler.yScale
         
         info["top"] = -info["height"] / 2
-        info["left"] = part.pos
+        info["left"] = part.pos * CanvasHandler.xScale
         
         let fill = new Color(part.color)
         fill.alpha *= 0.5
@@ -211,7 +210,9 @@ class CanvasHandler {
     }
 
     movePart(id, offset) {
-        this.rectangles[id].left += offset
+        console.log(`offset = ${offset}`)
+        console.log(`before: ${this.rectangles[id].left}, after: ${this.rectangles[id].left + offset * CanvasHandler.xScale}`)
+        this.rectangles[id].left += offset * CanvasHandler.xScale
     }
 
     deletePart(id) {
