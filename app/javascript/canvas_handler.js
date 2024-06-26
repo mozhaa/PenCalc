@@ -210,8 +210,6 @@ class CanvasHandler {
     }
 
     movePart(id, offset) {
-        console.log(`offset = ${offset}`)
-        console.log(`before: ${this.rectangles[id].left}, after: ${this.rectangles[id].left + offset * CanvasHandler.xScale}`)
         this.rectangles[id].left += offset * CanvasHandler.xScale
     }
 
