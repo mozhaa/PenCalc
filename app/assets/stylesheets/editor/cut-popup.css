@@ -1,0 +1,15 @@
+.cut-method-container {
+  margin-top: 1em;
+}
+
+.cut-form {
+  pointer-events: none;
+  opacity: 0.4;
+
+  margin-top: .5em;
+}
+
+label:has(input[type="radio"]:checked) ~ .cut-form {
+  pointer-events: all;
+  opacity: 1;
+}

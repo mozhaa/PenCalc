@@ -9,10 +9,26 @@ function hide(elem) {
 }
 
 class Popup {
-    constructor() {
-        $("body").append('<div class="popup-container" id="popup-container"></div>')
-        this.container = $("#popup-container")
-        this.pages_counter = 0
+    static id_count = 0
+
+    constructor(content) {
+        this.id_count = ++Popup.id_count
+        this.id = `popup-container-${this.id_count}`
+
+        $("body").append(
+            `<div class="popup-container" id="${this.id}">
+                <div class="popup-box">
+                    <div class="popup-close-button hover-darker-1"></div>
+                    <div class="popup-content-container">
+                        ${content}
+                    </div>
+                </div>
+            </div>`
+        )
+
+        this.container = $(`#${this.id}`)
+
+        this.container.find(".popup-close-button").on("click", () => { this.close() })
     }
 
     show() {
@@ -23,16 +39,7 @@ class Popup {
         hide(this.container)
     }
 
-    setPage(page_id) {
-        if (page_id > this.pages_counter || page_id < 1)
-            throw new Error(`There were only ${this.pages_counter} pages added`)
-
-        hide(this.container.children())
-        show(this.container.children(`.page-${page_id}`))
-    }
-
-    addPage(content) {
-        this.container.append(`<div class="popup-page page-${++this.pages_counter} display-block">${content}</div>`)
-        return this.pages_counter
+    close() {
+        this.container.remove()
     }
 }

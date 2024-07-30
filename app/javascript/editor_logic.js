@@ -46,6 +46,41 @@ $(document).on("turbo:load", function() {
     $(".mirror-tool").on("click", (event) => {
         parts_handler.mirrorPartsByRightEdge(parts_handler.duplicateParts(selectable_list.getSelectionIds()))
     })
+    $(".cut-tool").on("click", (event) => {
+        let popup = new Popup(`
+<div class="popup-content-container">
+  <h3>Cut <span>tip1</span></h3>
+  
+  <div class="cut-method-container">
+    <label>
+      <input type="radio" name="cut-method" value="length-method" checked />
+      by length
+    </label>
+
+    <div class="cut-form">
+      <label>
+        Length to cut (cm)
+        <input type="text" name="length" id="cut-length">
+      </label>
+    </div>
+  </div>
+
+  <div class="cut-method-container">
+    <label>
+      <input type="radio" name="cut-method" value="ratio-method" />
+      by ratio
+    </label>
+
+    <div class="cut-form">
+      <label>
+        Ratio to cut (f.e. 1:1 or 2:3)
+        <input type="text" name="ratio" id="cut-ratio">
+      </label>
+    </div>
+  </div>
+</div>
+        `)
+    })
 
     window.parts_handler = parts_handler
     window.canvas_handler = canvas_handler
