@@ -50,7 +50,7 @@
     <%= form_with url: search_parts_path, method: :post, class: "search-form" do |form| %>
       <span>or search in database</span>
       <div class="search-bar-container">
-        <%= form.search_field :query, oninput: "this.form.requestSubmit()", id: "search-bar", class: "search-bar", autocomplete: "off" %>
+        <%= form.search_field :query, oninput: "this.form.requestSubmit()", id: "search-bar", class: "search-bar", type: "text", autocomplete: "off" %>
         <ul class="search-results" id="search_results"></ul>
       </div>
     <% end %>
