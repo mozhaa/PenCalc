@@ -13,3 +13,19 @@ label:has(input[type="radio"]:checked) ~ .cut-form {
   pointer-events: all;
   opacity: 1;
 }
+
+.popup-content-container {
+    & span.error-message {
+      color: red;
+      margin-top: 1em;
+
+      display: block;
+      text-align: center;
+    }
+    
+    & input[type=button] {
+      padding: .2em 2em;
+      display: block;
+      margin: 1rem auto 0 auto;
+    }
+}
