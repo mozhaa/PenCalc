@@ -3,7 +3,7 @@
   background-color: var(--c-white);
 }
 
-.mod-name-input {
+input[type="text"].mod-name-input {
   position: absolute;
   bottom: 0;
   width: 100%;
